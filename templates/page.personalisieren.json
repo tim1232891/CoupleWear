@@ -13,9 +13,12 @@
       "type": "cw-personalize-page",
       "settings": {
         "title": "Macht es zu eurem.",
-        "description": "Tragt eure Namen und euer besonderes Datum ein. Im nächsten Schritt wählt ihr das passende Kleidungsstück.",
+        "description": "Personalisiert euren Pullover mit den Namen und dem Datum, das euch verbindet. Eure Vorschau verändert sich sofort.",
         "example_names": "David & Lena",
-        "example_date": "05.08.2022"
+        "example_date": "05.08.2022",
+        "preview_x": 50,
+        "preview_y": 57,
+        "preview_width": 43
       }
     }
   },

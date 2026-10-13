@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Couple Wear Studio – lokale Vorschau</title>
+    <link rel="stylesheet" href="../assets/cw-personalize-page.css">
+    <script src="../assets/cw-personalize-page.js" defer></script>
+    <style>body{margin:0;font-family:Arial,sans-serif}.test-header{height:72px;display:flex;align-items:center;padding:0 5vw;border-bottom:1px solid #dde5e1;font-weight:750;color:#293b37}</style>
+  </head>
+  <body>
+    <header class="test-header">Couple Wear</header>
+    <section class="cw-studio" data-cw-studio data-example-names="David &amp; Lena" data-example-date="05.08.2022" style="--cw-preview-x:50%;--cw-preview-y:57%;--cw-preview-width:43%;" aria-labelledby="studio-title">
+      <div class="cw-studio__topbar">
+        <a class="cw-studio__back" href="#"><span>←</span> Zurück zum Shop</a>
+        <span class="cw-studio__top-note"><i></i> Sicher personalisieren</span>
+      </div>
+      <div class="cw-studio__shell">
+        <div class="cw-studio__visual">
+          <div class="cw-studio__visual-heading"><span><i></i> LIVE-VORSCHAU</span><span>PERSONAL EDITION</span></div>
+          <div class="cw-studio__mockup">
+            <img class="cw-studio__product-image" src="../assets/cw-campaign-hoodie.webp" alt="Hoodie" data-cw-product-image>
+            <div class="cw-studio__print"><img src="../assets/cw-hands-heart.svg" alt=""><strong data-cw-names-preview>David &amp; Lena</strong><span data-cw-date-preview>05.08.2022</span></div>
+            <span class="cw-studio__zoom-note"><span>✦</span> Vorschau aktualisiert sich live</span>
+          </div>
+          <div class="cw-studio__visual-footer"><span>EURE NAMEN. EUER DATUM.</span><span>♡</span></div>
+        </div>
+        <div class="cw-studio__content">
+          <p class="cw-studio__eyebrow"><span>✦</span> COUPLE WEAR STUDIO</p>
+          <h1 id="studio-title">Macht es zu eurem.</h1>
+          <p class="cw-studio__lead">Personalisiert euren Pullover mit den Namen und dem Datum, das euch verbindet. Eure Vorschau verändert sich sofort.</p>
+          <div class="cw-studio__product-row"><div><span>DEIN PRINTFUL-PRODUKT</span><strong>Couple Wear Hoodie</strong></div><span class="cw-studio__price" data-cw-price>CHF 59.00</span></div>
+          <form class="cw-studio__form" action="#">
+            <div class="cw-studio__field"><label for="variant">Größe und Farbe</label><div class="cw-studio__select-wrap"><select id="variant" name="id" data-cw-variant-select><option data-price="CHF 59.00" data-available="true">Hellblau / M</option><option data-price="CHF 59.00" data-available="false">Hellblau / XL – Ausverkauft</option></select><span>⌄</span></div></div>
+            <div class="cw-studio__field"><label for="names">Eure Namen <em>*</em></label><input id="names" name="properties[Namen]" type="text" maxlength="38" placeholder="z. B. David &amp; Lena" required data-cw-names><div class="cw-studio__help"><span>Wird genau so für den Druck übernommen</span><span data-cw-counter>0 / 38</span></div></div>
+            <div class="cw-studio__field"><label for="date">Euer Datum <small>(optional)</small></label><input id="date" name="properties[Datum]" type="text" maxlength="20" placeholder="z. B. 05.08.2022" data-cw-date></div>
+            <input type="hidden" name="properties[Personalisierung]" data-cw-summary>
+            <div class="cw-studio__approval"><span>✓</span><p><strong>Druckfreigabe mit Kontrolle</strong> Namen und Datum werden zusammen mit deiner Shopify-Bestellung an den Printful-Auftrag übergeben.</p></div>
+            <button class="cw-studio__submit" type="submit" data-cw-submit data-add-text="Personalisiert in den Warenkorb" data-soldout-text="Diese Variante ist ausverkauft"><span data-cw-submit-label>Personalisiert in den Warenkorb</span><span>→</span></button>
+            <p class="cw-studio__legal">Die Vorschau dient zur Orientierung.</p><p class="cw-studio__status" data-cw-status></p>
+          </form>
+          <div class="cw-studio__trust"><span>♡ Persönlich gefertigt</span><span>♲ Bewusst produziert</span><span>⌁ Sicher bezahlt</span></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

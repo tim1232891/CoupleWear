@@ -1,10 +1,16 @@
 {{ 'cw-personalize-page.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'cw-personalize-page.js' | asset_url }}" defer></script>
+
 {%- liquid
   assign cw_product = section.settings.product
   if cw_product == blank
     assign cw_product = collections.all.products.first
   endif
+
+  assign cw_variant = cw_product.selected_or_first_available_variant
+  assign cw_product_image = cw_variant.featured_image | default: cw_product.featured_image
+  assign cw_form_id = 'CW-Personalize-' | append: section.id
+
   if section.settings.artwork != blank
     assign cw_artwork_url = section.settings.artwork | image_url: width: 1000
   else
@@ -13,65 +19,187 @@
 -%}
 
 <section
-  class="cw-start"
-  data-cw-start
-  data-product-url="{{ cw_product.url }}"
+  class="cw-studio"
+  data-cw-studio
   data-example-names="{{ section.settings.example_names | escape }}"
   data-example-date="{{ section.settings.example_date | escape }}"
-  aria-labelledby="cw-start-title-{{ section.id }}"
+  style="--cw-preview-x:{{ section.settings.preview_x }}%;--cw-preview-y:{{ section.settings.preview_y }}%;--cw-preview-width:{{ section.settings.preview_width }}%;"
+  aria-labelledby="cw-studio-title-{{ section.id }}"
 >
-  <div class="cw-start__copy">
-    <a class="cw-start__back" href="{{ routes.root_url }}"><span aria-hidden="true">←</span> Zurück zum Shop</a>
-    <p class="cw-start__eyebrow"><span aria-hidden="true">✦</span> SCHRITT 1 VON 2</p>
-    <h1 id="cw-start-title-{{ section.id }}">{{ section.settings.title | escape }}</h1>
-    <p class="cw-start__lead">{{ section.settings.description | escape }}</p>
-
-    <form class="cw-start__form" data-cw-start-form novalidate>
-      <div class="cw-start__field">
-        <label for="cw-start-names-{{ section.id }}">Eure Namen <span aria-hidden="true">*</span></label>
-        <input id="cw-start-names-{{ section.id }}" type="text" maxlength="38" placeholder="z. B. David & Lena" autocomplete="off" required data-cw-start-names>
-        <div class="cw-start__help"><span>So erscheinen die Namen auf eurem Design</span><span data-cw-start-counter>0 / 38</span></div>
-      </div>
-      <div class="cw-start__field">
-        <label for="cw-start-date-{{ section.id }}">Euer Datum <small>(optional)</small></label>
-        <input id="cw-start-date-{{ section.id }}" type="text" maxlength="20" placeholder="z. B. 05.08.2022" autocomplete="off" data-cw-start-date>
-      </div>
-      <button class="cw-start__button" type="submit" {% if cw_product == blank %}disabled{% endif %}>
-        Weiter zum Produkt <span aria-hidden="true">→</span>
-      </button>
-      {%- if cw_product == blank -%}
-        <p class="cw-start__error" role="alert">Bitte im Theme-Editor zuerst ein Printful-Produkt für diese Seite auswählen.</p>
-      {%- else -%}
-        <p class="cw-start__micro">Als Nächstes wählt ihr Größe und Farbe von „{{ cw_product.title | escape }}“.</p>
-      {%- endif -%}
-      <p class="cw-start__status" data-cw-start-status aria-live="polite"></p>
-    </form>
+  <div class="cw-studio__topbar">
+    <a class="cw-studio__back" href="{{ routes.root_url }}"><span aria-hidden="true">←</span> Zurück zum Shop</a>
+    <span class="cw-studio__top-note"><i aria-hidden="true"></i> Sicher personalisieren</span>
   </div>
 
-  <div class="cw-start__visual" aria-label="Live-Vorschau der Personalisierung">
-    <div class="cw-start__card">
-      <div class="cw-start__card-top"><span>LIVE-VORSCHAU</span><span>PERSONAL EDITION</span></div>
-      <div class="cw-start__art">
-        <img src="{{ cw_artwork_url }}" width="700" height="500" alt="Romantisches Linienkunst-Motiv">
-        <strong data-cw-start-names-preview>{{ section.settings.example_names | escape }}</strong>
-        <span data-cw-start-date-preview>{{ section.settings.example_date | escape }}</span>
+  <div class="cw-studio__shell">
+    <div class="cw-studio__visual" aria-label="Live-Vorschau des personalisierten Pullovers">
+      <div class="cw-studio__visual-heading">
+        <span><i aria-hidden="true"></i> LIVE-VORSCHAU</span>
+        <span>PERSONAL EDITION</span>
       </div>
-      <div class="cw-start__card-bottom"><span>EURE NAMEN. EUER DATUM.</span><span aria-hidden="true">♡</span></div>
+
+      <div class="cw-studio__mockup">
+        {%- if cw_product_image != blank -%}
+          <img
+            class="cw-studio__product-image"
+            src="{{ cw_product_image | image_url: width: 1400 }}"
+            width="{{ cw_product_image.width }}"
+            height="{{ cw_product_image.height }}"
+            alt="{{ cw_product.title | escape }}"
+            loading="eager"
+            fetchpriority="high"
+            data-cw-product-image
+          >
+        {%- else -%}
+          <img class="cw-studio__product-image" src="{{ 'cw-campaign-hoodie.webp' | asset_url }}" width="1000" height="1600" alt="Hellblauer personalisierbarer Hoodie" data-cw-product-image>
+        {%- endif -%}
+
+        <div class="cw-studio__print" aria-hidden="true">
+          <img src="{{ cw_artwork_url }}" width="700" height="390" alt="">
+          <strong data-cw-names-preview>{{ section.settings.example_names | escape }}</strong>
+          <span data-cw-date-preview>{{ section.settings.example_date | escape }}</span>
+        </div>
+
+        <span class="cw-studio__zoom-note"><span aria-hidden="true">✦</span> Vorschau aktualisiert sich live</span>
+      </div>
+
+      <div class="cw-studio__visual-footer">
+        <span>EURE NAMEN. EUER DATUM.</span>
+        <span aria-hidden="true">♡</span>
+      </div>
+    </div>
+
+    <div class="cw-studio__content">
+      <p class="cw-studio__eyebrow"><span aria-hidden="true">✦</span> COUPLE WEAR STUDIO</p>
+      <h1 id="cw-studio-title-{{ section.id }}">{{ section.settings.title | escape }}</h1>
+      <p class="cw-studio__lead">{{ section.settings.description | escape }}</p>
+
+      {%- if cw_product != blank and cw_variant != blank -%}
+        <div class="cw-studio__product-row">
+          <div>
+            <span>DEIN PRINTFUL-PRODUKT</span>
+            <strong>{{ cw_product.title | escape }}</strong>
+          </div>
+          <span class="cw-studio__price" data-cw-price>{{ cw_variant.price | money }}</span>
+        </div>
+
+        {%- form 'product', cw_product, id: cw_form_id, class: 'cw-studio__form' -%}
+          {%- if cw_product.variants.size > 1 -%}
+            <div class="cw-studio__field">
+              <label for="cw-variant-{{ section.id }}">Größe und Farbe</label>
+              <div class="cw-studio__select-wrap">
+                <select id="cw-variant-{{ section.id }}" name="id" data-cw-variant-select>
+                  {%- for variant in cw_product.variants -%}
+                    {%- assign cw_variant_image = variant.featured_image | default: cw_product.featured_image -%}
+                    <option
+                      value="{{ variant.id }}"
+                      data-price="{{ variant.price | money | escape }}"
+                      data-available="{{ variant.available }}"
+                      {% if cw_variant_image != blank %}data-image="{{ cw_variant_image | image_url: width: 1400 }}"{% endif %}
+                      {% if variant.id == cw_variant.id %}selected{% endif %}
+                    >
+                      {{ variant.title | escape }}{% unless variant.available %} – Ausverkauft{% endunless %}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <span aria-hidden="true">⌄</span>
+              </div>
+            </div>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ cw_variant.id }}">
+          {%- endif -%}
+
+          <div class="cw-studio__field">
+            <label for="cw-names-{{ section.id }}">Eure Namen <em>*</em></label>
+            <input
+              id="cw-names-{{ section.id }}"
+              name="properties[Namen]"
+              type="text"
+              maxlength="38"
+              placeholder="z. B. David & Lena"
+              autocomplete="off"
+              required
+              data-cw-names
+              aria-describedby="cw-names-help-{{ section.id }}"
+            >
+            <div class="cw-studio__help" id="cw-names-help-{{ section.id }}">
+              <span>Wird genau so für den Druck übernommen</span>
+              <span data-cw-counter>0 / 38</span>
+            </div>
+          </div>
+
+          <div class="cw-studio__field">
+            <label for="cw-date-{{ section.id }}">Euer Datum <small>(optional)</small></label>
+            <input
+              id="cw-date-{{ section.id }}"
+              name="properties[Datum]"
+              type="text"
+              maxlength="20"
+              placeholder="z. B. 05.08.2022"
+              autocomplete="off"
+              data-cw-date
+            >
+          </div>
+
+          <input type="hidden" name="quantity" value="1">
+          <input type="hidden" name="properties[Personalisierung]" value="" data-cw-summary>
+          <input type="hidden" name="properties[_CW Produktionsstatus]" value="Printful-Personalisierung erforderlich">
+          <input type="hidden" name="return_to" value="{{ routes.cart_url }}">
+
+          <div class="cw-studio__approval">
+            <span aria-hidden="true">✓</span>
+            <p><strong>Druckfreigabe mit Kontrolle</strong> Namen und Datum werden zusammen mit deiner Shopify-Bestellung an den Printful-Auftrag übergeben.</p>
+          </div>
+
+          <button
+            class="cw-studio__submit"
+            type="submit"
+            name="add"
+            data-cw-submit
+            data-add-text="Personalisiert in den Warenkorb"
+            data-soldout-text="Diese Variante ist ausverkauft"
+            {% unless cw_variant.available %}disabled{% endunless %}
+          >
+            <span data-cw-submit-label>{% if cw_variant.available %}Personalisiert in den Warenkorb{% else %}Diese Variante ist ausverkauft{% endif %}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+
+          <p class="cw-studio__legal">Mit dem Hinzufügen bestätigst du die Schreibweise. Die Vorschau dient zur Orientierung; Druckposition und Größe können leicht abweichen.</p>
+          <p class="cw-studio__status" data-cw-status aria-live="polite"></p>
+        {%- endform -%}
+      {%- else -%}
+        <div class="cw-studio__setup" role="status">
+          <span aria-hidden="true">!</span>
+          <div>
+            <strong>Printful-Produkt auswählen</strong>
+            <p>Öffne den Theme-Editor und wähle in diesem Abschnitt deinen veröffentlichten, mit Printful synchronisierten Pullover aus.</p>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="cw-studio__trust" aria-label="Vorteile">
+        <span>♡ Persönlich gefertigt</span>
+        <span>♲ Bewusst produziert</span>
+        <span>⌁ Sicher bezahlt</span>
+      </div>
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Couple Wear · Start",
+  "name": "Couple Wear · Studio",
   "settings": [
     {"type":"text","id":"title","label":"Überschrift","default":"Macht es zu eurem."},
-    {"type":"textarea","id":"description","label":"Beschreibung","default":"Tragt eure Namen und euer besonderes Datum ein. Im nächsten Schritt wählt ihr das passende Kleidungsstück."},
-    {"type":"product","id":"product","label":"Printful-Produkt für den nächsten Schritt","info":"Das Produkt muss in Shopify veröffentlicht und mit Printful synchronisiert sein."},
+    {"type":"textarea","id":"description","label":"Beschreibung","default":"Personalisiert euren Pullover mit den Namen und dem Datum, das euch verbindet. Eure Vorschau verändert sich sofort."},
+    {"type":"product","id":"product","label":"Printful-Pullover","info":"Wähle hier das Produkt, das über die Printful-App mit Shopify synchronisiert wurde."},
     {"type":"image_picker","id":"artwork","label":"Linienkunst-Motiv (optional)"},
     {"type":"text","id":"example_names","label":"Beispiel-Namen","default":"David & Lena"},
-    {"type":"text","id":"example_date","label":"Beispiel-Datum","default":"05.08.2022"}
+    {"type":"text","id":"example_date","label":"Beispiel-Datum","default":"05.08.2022"},
+    {"type":"range","id":"preview_x","label":"Vorschau horizontal","min":15,"max":85,"step":1,"unit":"%","default":50},
+    {"type":"range","id":"preview_y","label":"Vorschau vertikal","min":15,"max":85,"step":1,"unit":"%","default":57},
+    {"type":"range","id":"preview_width","label":"Vorschau-Größe","min":18,"max":75,"step":1,"unit":"%","default":43}
   ],
-  "presets": [{"name":"Couple Wear · Personalisierungsstart"}]
+  "presets": [{"name":"Couple Wear · Personalisierungsstudio"}]
 }
 {% endschema %}
