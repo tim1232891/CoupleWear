@@ -1,5 +1,8 @@
-
-
+{% if page.handle == 'personalisieren' %}
+  {{ 'cw-personalize-page.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cw-personalize-page.js' | asset_url }}" defer></script>
+  {% render 'cw-personalize-studio', section: section %}
+{% else %}
 {% liquid
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
@@ -26,6 +29,7 @@
     {% content_for 'blocks' %}
   </div>
 </div>
+{% endif %}
 
 {% schema %}
 {
@@ -46,6 +50,79 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Couple Wear · Personalisierungsseite"
+    },
+    {
+      "type": "paragraph",
+      "content": "Diese Einstellungen werden nur verwendet, wenn die Seite den URL-Handle „personalisieren“ besitzt."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Studio-Überschrift",
+      "default": "Macht es zu eurem."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Studio-Beschreibung",
+      "default": "Personalisiert euren Pullover mit den Namen und dem Datum, das euch verbindet. Eure Vorschau verändert sich sofort."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Printful-Pullover",
+      "info": "Wähle das Produkt, das über die Printful-App mit Shopify synchronisiert wurde."
+    },
+    {
+      "type": "image_picker",
+      "id": "artwork",
+      "label": "Linienkunst-Motiv (optional)"
+    },
+    {
+      "type": "text",
+      "id": "example_names",
+      "label": "Beispiel-Namen",
+      "default": "David & Lena"
+    },
+    {
+      "type": "text",
+      "id": "example_date",
+      "label": "Beispiel-Datum",
+      "default": "05.08.2022"
+    },
+    {
+      "type": "range",
+      "id": "preview_x",
+      "label": "Vorschau horizontal",
+      "min": 15,
+      "max": 85,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "preview_y",
+      "label": "Vorschau vertikal",
+      "min": 15,
+      "max": 85,
+      "step": 1,
+      "unit": "%",
+      "default": 57
+    },
+    {
+      "type": "range",
+      "id": "preview_width",
+      "label": "Vorschau-Größe",
+      "min": 18,
+      "max": 75,
+      "step": 1,
+      "unit": "%",
+      "default": 43
+    },
     {
       "type": "select",
       "id": "content_direction",

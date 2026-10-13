@@ -6,15 +6,23 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
-const studio = read('sections/cw-personalize-page.liquid');
+const studioSection = read('sections/cw-personalize-page.liquid');
+const studio = read('snippets/cw-personalize-studio.liquid');
 const studioScript = read('assets/cw-personalize-page.js');
 const product = read('snippets/cw-customizer.liquid');
 const productScript = read('assets/cw-customizer.js');
 const hero = read('sections/cw-hero.liquid');
+const mainPage = read('sections/main-page.liquid');
 
 test('the homepage links to the dedicated personalization route', () => {
   assert.match(hero, /pages\/personalisieren/);
   assert.match(hero, /personalization_page/);
+});
+
+test('the default page template falls back to the studio for the personalization handle', () => {
+  assert.match(mainPage, /page\.handle == 'personalisieren'/);
+  assert.match(mainPage, /render 'cw-personalize-studio'/);
+  assert.match(studioSection, /render 'cw-personalize-studio'/);
 });
 
 test('the studio renders a native Shopify product form on the personalization page', () => {

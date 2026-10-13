@@ -33,6 +33,11 @@ Wenn die Auswahl `personalisieren` nicht angezeigt wird, unter
 **Onlineshop → Themes** prüfen, ob das veröffentlichte Theme mit
 `tim1232891/CoupleWear`, Branch `main`, verbunden ist.
 
+Als zusätzliche Absicherung erkennt das Theme den URL-Handle
+`personalisieren` auch im Standardtemplate. Die Studio-Oberfläche wird deshalb
+selbst dann angezeigt, wenn Shopify die Seite weiterhin als **Default page**
+gespeichert hat.
+
 ### 2. Printful-Pullover auswählen
 
 1. **Onlineshop → Themes → Anpassen** öffnen.
@@ -91,6 +96,8 @@ Auftrag aktiv sein, sonst können doppelte Printful-Aufträge entstehen.
 | --- | --- |
 | `templates/page.personalisieren.json` | Vorlage der Personalisierungsseite |
 | `sections/cw-personalize-page.liquid` | Produkt, Eingaben, Vorschau und Warenkorbformular |
+| `snippets/cw-personalize-studio.liquid` | Wiederverwendbares Studio für Spezial- und Standardtemplate |
+| `sections/main-page.liquid` | Automatischer Fallback für den Handle `personalisieren` |
 | `assets/cw-personalize-page.js` | Live-Vorschau, Variante und Validierung |
 | `assets/cw-personalize-page.css` | Responsives Studio-Design |
 | `assets/cw-couple-hero-v2.webp` | Eigenes generiertes Kampagnenbild |
