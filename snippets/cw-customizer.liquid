@@ -1,10 +1,7 @@
 {% comment %}
-  COUPLE WEAR AI STUDIO
-  This snippet deliberately stays inside Horizon's product form. All visible choices
-  become Shopify line-item properties when the native add-to-cart flow runs.
-
-  `cw_ai_endpoint` is optional. When it is blank, the browser creates a privacy-first
-  line-art draft locally. A connected app proxy can return a reviewed print-file URL.
+  Simple text personalization for a Printful-synced product.
+  This snippet is rendered inside Horizon's native product form, therefore the
+  visible line-item properties travel with the Shopify order.
 {% endcomment %}
 {%- liquid
   assign cw_mockup_image = block_settings.cw_mockup_image
@@ -14,11 +11,10 @@
   if cw_product_words contains 'hoodie' or cw_product_words contains 'kapuzen'
     assign cw_detected_hoodie = true
   endif
-
   if cw_artwork_image != blank
-    assign cw_default_artwork_url = cw_artwork_image | image_url: width: 1000
+    assign cw_artwork_url = cw_artwork_image | image_url: width: 1000
   else
-    assign cw_default_artwork_url = 'cw-hands-heart.svg' | asset_url
+    assign cw_artwork_url = 'cw-hands-heart.svg' | asset_url
   endif
 -%}
 {{ 'cw-customizer.css' | asset_url | stylesheet_tag }}
@@ -28,123 +24,65 @@
   class="cw-personalizer"
   data-cw-personalizer
   data-cw-initial-names="{{ block_settings.cw_example_names | default: 'David & Lena' | escape }}"
-  data-cw-initial-year="{{ block_settings.cw_example_date | default: '2022' | escape }}"
-  data-cw-default-artwork="{{ cw_default_artwork_url }}"
-  data-cw-ai-endpoint="{{ block_settings.cw_ai_endpoint | strip | escape }}"
-  data-cw-garment="{% if cw_detected_hoodie %}Hoodie{% else %}T-Shirt{% endif %}"
+  data-cw-initial-date="{{ block_settings.cw_example_date | default: '05.08.2022' | escape }}"
   style="--cw-pos-x:{{ block_settings.cw_position_x | default: 50 }}%;--cw-pos-y:{{ block_settings.cw_position_y | default: 49 }}%;--cw-print-width:{{ block_settings.cw_print_width | default: 48 }}%;"
-  aria-labelledby="cw-studio-title-{{ section.id }}"
+  aria-labelledby="cw-personalizer-title-{{ section.id }}"
 >
   <header class="cw-personalizer__intro">
-    <p class="cw-personalizer__eyebrow"><span aria-hidden="true">✦</span> COUPLE WEAR AI STUDIO</p>
-    <h2 class="cw-personalizer__title" id="cw-studio-title-{{ section.id }}">{{ block_settings.cw_title | default: 'Euer Moment als Design.' | escape }}</h2>
-    <p class="cw-personalizer__subtitle">{{ block_settings.cw_description | default: 'Aus eurem Lieblingsfoto entsteht eine persönliche Linienzeichnung für euer Kleidungsstück.' | escape }}</p>
+    <p class="cw-personalizer__eyebrow"><span aria-hidden="true">✦</span> EURE GESCHICHTE. EUER LOOK.</p>
+    <h2 class="cw-personalizer__title" id="cw-personalizer-title-{{ section.id }}">{{ block_settings.cw_title | default: 'Macht es zu eurem.' | escape }}</h2>
+    <p class="cw-personalizer__subtitle">{{ block_settings.cw_description | default: 'Tragt eure Namen und euer besonderes Datum ein.' | escape }}</p>
   </header>
-
-  <ol class="cw-personalizer__progress" aria-label="Fortschritt im Design-Studio">
-    <li class="is-active" data-cw-progress="upload"><span>01</span> Foto</li>
-    <li data-cw-progress="design"><span>02</span> Linienkunst</li>
-    <li data-cw-progress="personalize"><span>03</span> Personalisieren</li>
-    <li data-cw-progress="ready"><span>04</span> Bereit</li>
-  </ol>
 
   <div class="cw-personalizer__layout">
     <div class="cw-personalizer__preview-card">
       <div class="cw-personalizer__preview-top">
-        <span class="cw-personalizer__live"><span class="cw-personalizer__live-dot" aria-hidden="true"></span> LIVE-MOCKUP</span>
-        <span class="cw-personalizer__edition" data-cw-garment-label>{% if cw_detected_hoodie %}HOODIE{% else %}T-SHIRT{% endif %} / PERSONAL EDITION</span>
+        <span class="cw-personalizer__live"><span class="cw-personalizer__live-dot" aria-hidden="true"></span> LIVE-VORSCHAU</span>
+        <span class="cw-personalizer__edition">{% if cw_detected_hoodie %}HOODIE{% else %}T-SHIRT{% endif %} / PERSONAL EDITION</span>
       </div>
-      <div class="cw-personalizer__stage" data-cw-stage role="img" aria-label="Live-Vorschau des personalisierten Kleidungsstücks">
+      <div class="cw-personalizer__stage" role="img" aria-label="Vorschau des Kleidungsstücks mit Namen und Datum">
         {%- if cw_mockup_image != blank -%}
-          {{ cw_mockup_image | image_url: width: 1100 | image_tag: class: 'cw-personalizer__mockup', widths: '400, 700, 900, 1100', loading: 'lazy', alt: 'Blanko-Produkt als Basis für die personalisierte Vorschau' }}
+          {{ cw_mockup_image | image_url: width: 1100 | image_tag: class: 'cw-personalizer__mockup', widths: '400, 700, 900, 1100', loading: 'lazy', alt: 'Blanko-Produkt für die personalisierte Vorschau' }}
         {%- else -%}
           <svg class="cw-personalizer__garment" viewBox="0 0 600 650" role="img" aria-label="Illustration des Kleidungsstücks" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="cw-fabric-{{ section.id }}" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f9faf8"/><stop offset=".58" stop-color="#eaece9"/><stop offset="1" stop-color="#dde3e2"/></linearGradient>
-              <filter id="cw-shadow-{{ section.id }}" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="12"/></filter>
-            </defs>
-            <ellipse cx="304" cy="575" rx="164" ry="25" fill="#777d7d" opacity=".13" filter="url(#cw-shadow-{{ section.id }})"/>
+            <defs><linearGradient id="cw-fabric-{{ section.id }}" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fafbf9"/><stop offset=".58" stop-color="#e9ece9"/><stop offset="1" stop-color="#dce3e1"/></linearGradient></defs>
             {% if cw_detected_hoodie %}
               <path d="M193 135 Q206 79 300 60 Q395 77 408 135 Q414 172 389 204 L211 204 Q187 169 193 135Z" fill="#edf0ee" stroke="#c7cecb" stroke-width="5"/>
               <path d="M200 149 L129 179 L56 383 Q54 399 70 410 L120 427 Q139 431 147 410 L180 322 L182 564 Q183 580 199 580 L402 580 Q419 580 420 564 L421 322 L453 411 Q463 431 479 427 L530 409 Q546 398 541 382 L470 178 L407 149 Q387 198 301 199 Q218 197 200 149Z" fill="url(#cw-fabric-{{ section.id }})" stroke="#c7cecb" stroke-width="4"/>
-              <path d="M201 150 Q243 208 299 207 Q361 205 405 149 M200 570 Q300 584 403 570 M98 404 L148 417 M452 417 L503 404" stroke="#c7cecb" stroke-width="3" fill="none"/>
             {% else %}
               <path d="M203 108 Q243 119 301 119 Q358 119 399 108 L503 158 L555 282 L469 322 L424 240 L424 561 Q301 577 177 561 L177 240 L131 322 L45 282 L97 158Z" fill="url(#cw-fabric-{{ section.id }})" stroke="#c7cecb" stroke-width="4"/>
               <path d="M240 115 Q300 191 360 115" fill="#e2e8e5" stroke="#c7cecb" stroke-width="4"/>
-              <path d="M132 321 L92 304 M469 322 L509 304 M178 562 Q300 576 423 562" stroke="#c5cdca" stroke-width="3" fill="none"/>
             {% endif %}
           </svg>
         {%- endif -%}
         <div class="cw-personalizer__print" aria-hidden="true">
-          <svg class="cw-personalizer__heart-frame" data-cw-heart-frame viewBox="0 0 100 92" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 85C9 59 5 34 17 18 29 3 46 13 50 25 54 13 71 3 83 18 95 34 91 59 50 85Z" stroke="currentColor" stroke-width="1.7"/></svg>
-          <img class="cw-personalizer__artwork" data-cw-artwork-image src="{{ cw_default_artwork_url }}" width="700" height="390" alt="" loading="lazy">
+          <img class="cw-personalizer__artwork" src="{{ cw_artwork_url }}" width="700" height="390" alt="" loading="lazy">
           <span class="cw-personalizer__live-text" data-cw-names-preview>{{ block_settings.cw_example_names | default: 'David & Lena' | escape }}</span>
-          <span class="cw-personalizer__live-date" data-cw-year-preview>{{ block_settings.cw_example_date | default: '2022' | escape }}</span>
+          <span class="cw-personalizer__live-date" data-cw-date-preview>{{ block_settings.cw_example_date | default: '05.08.2022' | escape }}</span>
         </div>
       </div>
-      <div class="cw-personalizer__preview-bottom"><span data-cw-preview-status>ENTWURF – NOCH NICHT PRODUKTION</span><span aria-hidden="true">♡</span></div>
+      <div class="cw-personalizer__preview-bottom"><span>PERSÖNLICH FÜR EUCH.</span><span aria-hidden="true">♡</span></div>
     </div>
 
     <div class="cw-personalizer__controls">
-      <fieldset class="cw-personalizer__panel" data-cw-upload-panel>
-        <legend><span class="cw-personalizer__step-number">01</span> Euer Foto</legend>
-        <p class="cw-personalizer__panel-copy">Wählt ein gut belichtetes Foto, auf dem ihr beide klar zu erkennen seid.</p>
-        <label class="cw-personalizer__upload" for="cw-photo-{{ section.id }}" data-cw-upload-label>
-          <span class="cw-personalizer__upload-icon" aria-hidden="true">↑</span>
-          <span><strong>Foto auswählen</strong><small>JPG, PNG oder WebP · max. 10 MB</small></span>
-          <span class="cw-personalizer__upload-name" data-cw-photo-name>Kein Foto gewählt</span>
-        </label>
-        <input class="cw-personalizer__file-input" type="file" id="cw-photo-{{ section.id }}" accept="image/jpeg,image/png,image/webp" data-cw-photo-input required>
-        <p class="cw-personalizer__input-error" data-cw-photo-error aria-live="polite"></p>
-      </fieldset>
-
-      <fieldset class="cw-personalizer__panel" data-cw-design-panel>
-        <legend><span class="cw-personalizer__step-number">02</span> Linienkunst gestalten</legend>
-        <div class="cw-personalizer__style-grid" role="radiogroup" aria-label="Stil der Linienzeichnung">
-          <label class="cw-personalizer__style-card is-selected"><input type="radio" name="properties[Designstil]" value="Fine Line" data-cw-style-input checked><span class="cw-personalizer__style-mark cw-personalizer__style-mark--fine" aria-hidden="true"></span><strong>Fine Line</strong><small>zart &amp; elegant</small></label>
-          <label class="cw-personalizer__style-card"><input type="radio" name="properties[Designstil]" value="Romantic" data-cw-style-input><span class="cw-personalizer__style-mark cw-personalizer__style-mark--romantic" aria-hidden="true">♡</span><strong>Romantic</strong><small>mit Herzrahmen</small></label>
-          <label class="cw-personalizer__style-card"><input type="radio" name="properties[Designstil]" value="Detailed" data-cw-style-input><span class="cw-personalizer__style-mark cw-personalizer__style-mark--detail" aria-hidden="true"></span><strong>Detailed</strong><small>mehr Kontur</small></label>
-        </div>
-        <button class="cw-personalizer__generate" type="button" data-cw-generate-button><span aria-hidden="true">✦</span> Linienkunst erstellen</button>
-        <p class="cw-personalizer__generate-note" data-cw-generation-note>Die Vorschau wird erst nach eurer Bestätigung zur Bestellung hinzugefügt.</p>
-      </fieldset>
-
-      <fieldset class="cw-personalizer__panel" data-cw-personalize-panel>
-        <legend><span class="cw-personalizer__step-number">03</span> Eure Signatur</legend>
-        <div class="cw-personalizer__field-group">
-          <label class="cw-personalizer__field-label" for="cw-names-{{ section.id }}">Eure Namen <span aria-hidden="true">*</span></label>
-          <input class="cw-personalizer__input" type="text" id="cw-names-{{ section.id }}" name="properties[Namen]" placeholder="z. B. David & Lena" maxlength="38" autocomplete="off" required data-cw-names-input aria-describedby="cw-names-help-{{ section.id }}">
-          <span class="cw-personalizer__help"><span id="cw-names-help-{{ section.id }}">Bis zu 38 Zeichen</span><span data-cw-counter aria-live="off">0 / 38</span></span>
-        </div>
-        <div class="cw-personalizer__field-row">
-          <div class="cw-personalizer__field-group">
-            <label class="cw-personalizer__field-label" for="cw-year-{{ section.id }}">Jahr <span class="cw-personalizer__optional">(optional)</span></label>
-            <input class="cw-personalizer__input" type="text" id="cw-year-{{ section.id }}" name="properties[Jahr]" placeholder="z. B. 2022" maxlength="12" inputmode="numeric" autocomplete="off" data-cw-year-input>
-          </div>
-          <div class="cw-personalizer__field-group">
-            <label class="cw-personalizer__field-label" for="cw-font-{{ section.id }}">Schrift</label>
-            <select class="cw-personalizer__select" id="cw-font-{{ section.id }}" name="properties[Schriftstil]" data-cw-font-input>
-              <option value="Signatur">Signatur</option>
-              <option value="Elegant">Elegant</option>
-              <option value="Modern">Modern</option>
-            </select>
-          </div>
-        </div>
-      </fieldset>
-
-      {%- comment -%} Private fields carry order-production metadata without cluttering the storefront cart. {%- endcomment -%}
-      <input type="hidden" name="properties[_CW Studio]" value="Couple Wear AI Studio v1" data-cw-studio-version>
-      <input type="hidden" name="properties[_CW Design-ID]" value="" data-cw-design-id>
-      <input type="hidden" name="properties[_CW Produktionsstatus]" value="Entwurf – Prüfung erforderlich" data-cw-production-status>
-      <input class="cw-personalizer__private-file" type="file" name="properties[_CW Referenzfoto]" data-cw-reference-file tabindex="-1" aria-hidden="true">
-      <input class="cw-personalizer__private-file" type="file" name="properties[_CW Printdatei]" data-cw-print-file tabindex="-1" aria-hidden="true">
-      <input type="hidden" name="properties[_CW Printdatei-URL]" value="" data-cw-print-url>
+      <div class="cw-personalizer__step-label"><span>01</span> PERSÖNLICHE ANGABEN</div>
+      <div class="cw-personalizer__field-group">
+        <label class="cw-personalizer__field-label" for="cw-names-{{ section.id }}">Eure Namen <span aria-hidden="true">*</span></label>
+        <input class="cw-personalizer__input" type="text" id="cw-names-{{ section.id }}" name="properties[Namen]" placeholder="z. B. David & Lena" maxlength="38" autocomplete="off" required data-cw-names-input aria-describedby="cw-names-help-{{ section.id }}">
+        <span class="cw-personalizer__help"><span id="cw-names-help-{{ section.id }}">Bitte Schreibweise prüfen</span><span data-cw-counter>0 / 38</span></span>
+      </div>
+      <div class="cw-personalizer__field-group">
+        <label class="cw-personalizer__field-label" for="cw-date-{{ section.id }}">Euer Datum <span class="cw-personalizer__optional">(optional)</span></label>
+        <input class="cw-personalizer__input" type="text" id="cw-date-{{ section.id }}" name="properties[Datum]" placeholder="z. B. 05.08.2022" maxlength="20" autocomplete="off" data-cw-date-input>
+      </div>
+      <input type="hidden" name="properties[Personalisierung]" value="" data-cw-summary-input>
+      <input type="hidden" name="properties[_CW Produktionsstatus]" value="Printful-Personalisierung erforderlich">
 
       <aside class="cw-personalizer__note">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11Z"/></svg>
-        <p>Wir prüfen jedes Motiv vor dem Druck. Eure Datei wird erst nach dieser Prüfung an die Produktion übergeben.</p>
+        <p>Diese Angaben werden mit der Shopify-Bestellung an den personalisierten Printful-Auftrag übergeben. Vor dem Druck wird der Entwurf geprüft.</p>
       </aside>
-      <p class="cw-personalizer__disclaimer">Mit dem Hinzufügen zum Warenkorb bestätigt ihr, dass ihr die Rechte am Foto besitzt. Das Live-Mockup ist eine Vorschau; Druckposition und Farbe können leicht abweichen.</p>
+      <p class="cw-personalizer__disclaimer">Die Vorschau dient zur Orientierung. Druckgröße und Position können leicht abweichen.</p>
     </div>
   </div>
   <p class="cw-personalizer__form-status visually-hidden" aria-live="polite" data-cw-status></p>

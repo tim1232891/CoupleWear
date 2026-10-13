@@ -1,0 +1,77 @@
+{{ 'cw-personalize-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cw-personalize-page.js' | asset_url }}" defer></script>
+{%- liquid
+  assign cw_product = section.settings.product
+  if cw_product == blank
+    assign cw_product = collections.all.products.first
+  endif
+  if section.settings.artwork != blank
+    assign cw_artwork_url = section.settings.artwork | image_url: width: 1000
+  else
+    assign cw_artwork_url = 'cw-hands-heart.svg' | asset_url
+  endif
+-%}
+
+<section
+  class="cw-start"
+  data-cw-start
+  data-product-url="{{ cw_product.url }}"
+  data-example-names="{{ section.settings.example_names | escape }}"
+  data-example-date="{{ section.settings.example_date | escape }}"
+  aria-labelledby="cw-start-title-{{ section.id }}"
+>
+  <div class="cw-start__copy">
+    <a class="cw-start__back" href="{{ routes.root_url }}"><span aria-hidden="true">←</span> Zurück zum Shop</a>
+    <p class="cw-start__eyebrow"><span aria-hidden="true">✦</span> SCHRITT 1 VON 2</p>
+    <h1 id="cw-start-title-{{ section.id }}">{{ section.settings.title | escape }}</h1>
+    <p class="cw-start__lead">{{ section.settings.description | escape }}</p>
+
+    <form class="cw-start__form" data-cw-start-form novalidate>
+      <div class="cw-start__field">
+        <label for="cw-start-names-{{ section.id }}">Eure Namen <span aria-hidden="true">*</span></label>
+        <input id="cw-start-names-{{ section.id }}" type="text" maxlength="38" placeholder="z. B. David & Lena" autocomplete="off" required data-cw-start-names>
+        <div class="cw-start__help"><span>So erscheinen die Namen auf eurem Design</span><span data-cw-start-counter>0 / 38</span></div>
+      </div>
+      <div class="cw-start__field">
+        <label for="cw-start-date-{{ section.id }}">Euer Datum <small>(optional)</small></label>
+        <input id="cw-start-date-{{ section.id }}" type="text" maxlength="20" placeholder="z. B. 05.08.2022" autocomplete="off" data-cw-start-date>
+      </div>
+      <button class="cw-start__button" type="submit" {% if cw_product == blank %}disabled{% endif %}>
+        Weiter zum Produkt <span aria-hidden="true">→</span>
+      </button>
+      {%- if cw_product == blank -%}
+        <p class="cw-start__error" role="alert">Bitte im Theme-Editor zuerst ein Printful-Produkt für diese Seite auswählen.</p>
+      {%- else -%}
+        <p class="cw-start__micro">Als Nächstes wählt ihr Größe und Farbe von „{{ cw_product.title | escape }}“.</p>
+      {%- endif -%}
+      <p class="cw-start__status" data-cw-start-status aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div class="cw-start__visual" aria-label="Live-Vorschau der Personalisierung">
+    <div class="cw-start__card">
+      <div class="cw-start__card-top"><span>LIVE-VORSCHAU</span><span>PERSONAL EDITION</span></div>
+      <div class="cw-start__art">
+        <img src="{{ cw_artwork_url }}" width="700" height="500" alt="Romantisches Linienkunst-Motiv">
+        <strong data-cw-start-names-preview>{{ section.settings.example_names | escape }}</strong>
+        <span data-cw-start-date-preview>{{ section.settings.example_date | escape }}</span>
+      </div>
+      <div class="cw-start__card-bottom"><span>EURE NAMEN. EUER DATUM.</span><span aria-hidden="true">♡</span></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Couple Wear · Start",
+  "settings": [
+    {"type":"text","id":"title","label":"Überschrift","default":"Macht es zu eurem."},
+    {"type":"textarea","id":"description","label":"Beschreibung","default":"Tragt eure Namen und euer besonderes Datum ein. Im nächsten Schritt wählt ihr das passende Kleidungsstück."},
+    {"type":"product","id":"product","label":"Printful-Produkt für den nächsten Schritt","info":"Das Produkt muss in Shopify veröffentlicht und mit Printful synchronisiert sein."},
+    {"type":"image_picker","id":"artwork","label":"Linienkunst-Motiv (optional)"},
+    {"type":"text","id":"example_names","label":"Beispiel-Namen","default":"David & Lena"},
+    {"type":"text","id":"example_date","label":"Beispiel-Datum","default":"05.08.2022"}
+  ],
+  "presets": [{"name":"Couple Wear · Personalisierungsstart"}]
+}
+{% endschema %}

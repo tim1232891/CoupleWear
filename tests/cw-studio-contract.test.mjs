@@ -6,42 +6,40 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
-const liquid = read('snippets/cw-customizer.liquid');
-const script = read('assets/cw-customizer.js');
-const schema = read('blocks/buy-buttons.liquid');
+const landing = read('sections/cw-personalize-page.liquid');
+const landingScript = read('assets/cw-personalize-page.js');
+const product = read('snippets/cw-customizer.liquid');
+const productScript = read('assets/cw-customizer.js');
+const hero = read('sections/cw-hero.liquid');
 
-test('the studio keeps every customer selection inside the native product form contract', () => {
-  for (const property of [
-    'properties[Namen]',
-    'properties[Jahr]',
-    'properties[Schriftstil]',
-    'properties[Designstil]',
-    'properties[_CW Design-ID]',
-    'properties[_CW Produktionsstatus]',
-  ]) {
-    assert.match(liquid, new RegExp(property.replace(/[\[\]]/g, '\\$&')));
+test('the homepage links to the dedicated personalization route', () => {
+  assert.match(hero, /pages\/personalisieren/);
+  assert.match(hero, /personalization_page/);
+});
+
+test('the first step asks for names and date only', () => {
+  assert.match(landing, /data-cw-start-names/);
+  assert.match(landing, /data-cw-start-date/);
+  assert.doesNotMatch(landing, /type="file"/);
+  assert.doesNotMatch(landing, /Designstil|Schriftstil/);
+});
+
+test('personalization is carried to the selected product', () => {
+  assert.match(landingScript, /cw_names/);
+  assert.match(landingScript, /cw_date/);
+  assert.match(landingScript, /sessionStorage\.setItem/);
+  assert.match(productScript, /sessionStorage\.getItem/);
+});
+
+test('Shopify receives visible Printful personalization properties', () => {
+  assert.match(product, /properties\[Namen\]/);
+  assert.match(product, /properties\[Datum\]/);
+  assert.match(product, /properties\[Personalisierung\]/);
+  assert.match(product, /Printful-Personalisierung erforderlich/);
+});
+
+test('browser assets parse as JavaScript', () => {
+  for (const file of ['assets/cw-personalize-page.js', 'assets/cw-customizer.js']) {
+    execFileSync(process.execPath, ['--check', resolve(root, file)], { stdio: 'pipe' });
   }
-  assert.match(liquid, /data-cw-photo-input/);
-  assert.match(liquid, /data-cw-generate-button/);
-  assert.match(liquid, /data-cw-print-file/);
-});
-
-test('the local fallback validates uploads and does not bypass the design gate', () => {
-  assert.match(script, /MAX_FILE_SIZE = 10 \* 1024 \* 1024/);
-  assert.match(script, /image\/jpeg', 'image\/png', 'image\/webp/);
-  assert.match(script, /if \(!state\.designReady\)/);
-  assert.match(script, /renderLineArt\(state\.photo, style\)/);
-  assert.match(script, /data-cw-print-file/);
-  assert.match(liquid, /properties\[_CW Printdatei\]/);
-});
-
-test('the configurable proxy and its fallback are both present', () => {
-  assert.match(schema, /"id": "cw_ai_endpoint"/);
-  assert.match(liquid, /data-cw-ai-endpoint/);
-  assert.match(script, /requestRemoteDesign/);
-  assert.match(script, /if \(!endpoint\) return null/);
-});
-
-test('the browser asset parses as JavaScript', () => {
-  execFileSync(process.execPath, ['--check', resolve(root, 'assets/cw-customizer.js')], { stdio: 'pipe' });
 });

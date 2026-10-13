@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "cw-personalize-page",
+      "settings": {
+        "title": "Macht es zu eurem.",
+        "description": "Tragt eure Namen und euer besonderes Datum ein. Im nächsten Schritt wählt ihr das passende Kleidungsstück.",
+        "example_names": "David & Lena",
+        "example_date": "05.08.2022"
+      }
+    }
+  },
+  "order": ["main"]
+}

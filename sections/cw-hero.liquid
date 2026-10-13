@@ -1,10 +1,8 @@
 {{ 'cw-storefront.css' | asset_url | stylesheet_tag }}
 {%- liquid
-  assign cw_target = routes.all_products_collection_url
-  if section.settings.featured_product != blank
-    assign cw_target = section.settings.featured_product.url
-  elsif collections.all.products.first != blank
-    assign cw_target = collections.all.products.first.url
+  assign cw_target = routes.root_url | append: 'pages/personalisieren'
+  if section.settings.personalization_page != blank
+    assign cw_target = section.settings.personalization_page.url
   endif
   assign cw_photo = section.settings.campaign_image
 -%}
@@ -38,7 +36,7 @@
     {"type":"text","id":"title_accent","label":"Titel, kursiv","default":"bleiben."},
     {"type":"textarea","id":"description","label":"Beschreibung","default":"Nicht einfach nur ein Hoodie. Ein Stück eurer Geschichte – mit euren Namen, eurem Datum und eurem ganz persönlichen Design."},
     {"type":"text","id":"button_label","label":"Button-Text","default":"Jetzt personalisieren"},
-    {"type":"product","id":"featured_product","label":"Produkt für den Hauptbutton"},
+    {"type":"page","id":"personalization_page","label":"Personalisierungsseite","info":"Wähle die Shopify-Seite mit der Vorlage page.personalisieren."},
     {"type":"image_picker","id":"campaign_image","label":"Eigenes Hero-Foto (optional)"}
   ],
   "presets": [{"name":"Couple Wear · Hero"}]

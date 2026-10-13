@@ -1,126 +1,75 @@
-# Couple Wear AI Studio
+# Couple Wear – Personalisierung mit Printful
 
-Ein Shopify-Theme-Modul für personalisierte Couple-Wear. Kund:innen laden ein gemeinsames Foto hoch, wählen einen Linienkunst-Stil, ergänzen Namen und Jahr und sehen die Kombination direkt auf dem T-Shirt- oder Hoodie-Mockup.
+Der Shop besitzt einen zweistufigen Personalisierungsablauf:
 
-## Was bereits funktioniert
+1. Auf `/pages/personalisieren` geben Kund:innen ausschließlich Namen und Datum ein.
+2. Danach öffnet sich das ausgewählte Produkt. Größe/Farbe werden über Shopify gewählt; Namen und Datum sind bereits eingesetzt und werden als Line-Item-Properties mit der Bestellung gespeichert.
 
-- Vier geführte Schritte: Foto, Linienkunst, Personalisierung, Bestellung
-- Bildvalidierung für JPG, PNG und WebP bis 10 MB
-- Lokaler Linienkunst-Entwurf im Browser mit drei Stilen: Fine Line, Romantic und Detailed
-- Live-Mockup mit Namen, Jahr, Schrift und optionalem Herzrahmen
-- Übergabe aller Gestaltungsdaten als Shopify-Line-Item-Properties
-- Private Metadaten für Referenzfoto, Design-ID, Produktionsstatus und Printdatei
-- Warenkorb wird blockiert, bis Foto, Entwurf und Namen vollständig sind
-- Voll responsive und per Tastatur bedienbar
+Für den ersten produktiven Stand wird Printfuls offizielle textbasierte Personalisierung verwendet. Personalisierte Shopify-Bestellungen erscheinen bei Printful als Entwurf mit **Requires personalization**. Dort werden Namen und Datum kontrolliert, in die Textfelder des Designs übernommen und erst anschließend zur Produktion freigegeben.
 
-Die lokale Bildverarbeitung ist absichtlich nur ein Entwurf. Sie hält das Foto im Browser, liefert aber keine geprüfte Druckdatei. Für den echten Produktionsbetrieb übernimmt der unten beschriebene Studio-App-Proxy die KI-Verarbeitung, sichere Ablage und die Freigabe an Printful.
+## Einmalige Shopify-Einrichtung
 
-## Theme-Dateien
+### 1. Personalisierungsseite erstellen
+
+1. Shopify-Admin öffnen.
+2. **Onlineshop → Seiten → Seite hinzufügen**.
+3. Titel: `Personalisieren`.
+4. URL-Handle: `personalisieren`.
+5. Als Theme-Vorlage `page.personalisieren` auswählen.
+6. Speichern und die Seite veröffentlichen.
+
+Das ist der einzige Schritt, den ein Theme nicht selbst erledigen darf: JSON-Templates stellen eine Vorlage bereit, erstellen aber keine Shopify-Seitenressource.
+
+### 2. Zielprodukt auswählen
+
+1. **Onlineshop → Themes → Anpassen** öffnen.
+2. Oben die Seite **Personalisieren** auswählen.
+3. Im Abschnitt **Couple Wear · Start** unter **Printful-Produkt für den nächsten Schritt** das personalisierte Produkt wählen.
+4. Optional das Linienkunst-Motiv austauschen.
+5. Auf der Startseite im Abschnitt **Couple Wear · Hero** die Seite **Personalisieren** auswählen.
+
+Ohne explizite Auswahl verwendet die Personalisierungsseite als Fallback das erste veröffentlichte Produkt im Shop.
+
+## Einmalige Printful-Einrichtung
+
+1. Die offizielle Printful-App in Shopify installieren und den Store verbinden.
+2. In Printful den **Design Maker** öffnen und ein Produkt mit dem gewünschten festen Motiv anlegen.
+3. Für die veränderbaren Textbereiche Text-Layer für Namen und Datum anlegen.
+4. Für das Produkt die Printful-Funktion **Personalization** aktivieren.
+5. Das Produkt aus Printful nach Shopify veröffentlichen oder das bestehende Shopify-Produkt in Printful vollständig synchronisieren.
+6. Prüfen, dass alle Größen-/Farbvarianten synchronisiert sind und der Printful-Standort die Erfüllung verwaltet.
+7. In Printful unter **Settings → Store settings → Orders** die manuelle Bestätigung aktivieren. Personalisierte Produkte werden ohnehin als Entwurf importiert; die Einstellung schützt zusätzlich vor versehentlicher Produktion.
+8. Dieses Produkt anschließend in der Shopify-Personalisierungsseite auswählen.
+
+## Ablauf bei jeder Bestellung
+
+1. Shopify-Zahlung prüfen.
+2. In der Shopify-Bestellung die Eigenschaften `Namen`, `Datum` und `Personalisierung` kontrollieren.
+3. Printful öffnen. Der Auftrag sollte den Status **Requires personalization** haben.
+4. **Personalize order** öffnen und Namen/Datum exakt aus Shopify übernehmen.
+5. Mockup, Schreibweise, Druckposition und Produktvariante prüfen.
+6. Auftrag erst danach bestätigen und an Printful übergeben.
+
+Für den aktuellen Text-MVP ist keine eigene Printful-API nötig. Eine Vollautomatisierung benötigt später einen separaten, geschützten Server mit Printful-Token; ein Token darf niemals in Liquid oder Browser-JavaScript stehen. Printfuls Orders API kann individuelle Druckdateien als Draft anlegen, doch für zwei Textfelder ist der offizielle `Requires personalization`-Workflow sicherer und schneller einsatzbereit.
+
+## Relevante Dateien
 
 | Datei | Aufgabe |
 | --- | --- |
-| `snippets/cw-customizer.liquid` | Studio-Oberfläche und Shopify-Properties innerhalb des Original-Produktformulars |
-| `assets/cw-customizer.js` | Upload, Linienkunst-Entwurf, Live-Mockup, Validierung und App-Proxy-Aufruf |
-| `assets/cw-customizer.css` | Responsive Studio-Oberfläche |
-| `blocks/buy-buttons.liquid` | Theme-Editor-Einstellungen inklusive optionalem App-Proxy |
-
-## Aktivierung im Theme
-
-1. Öffne in Shopify **Onlineshop → Themes → Anpassen**.
-2. Öffne ein personalisierbares Produkt und den Block **Kaufbuttons**.
-3. Aktiviere **Live-Personalisierung aktivieren**.
-4. Optional: Lade ein neutrales Mockup und ein Standardmotiv hoch. Das Mockup darf keinen bestehenden Aufdruck tragen.
-5. Solange der App-Proxy noch nicht verbunden ist, bleibt **Studio-App-Proxy** leer. Dann erzeugt das Studio ausschließlich einen lokalen Entwurf.
-
-Die Produktvorlage `product.json` ist dafür bereits aktiviert. `product.standard.json` bleibt als nicht-personalisierbare Vorlage vorbereitet.
-
-## Produktionsarchitektur
-
-```text
-Kund:innenfoto
-      │
-      ├─ ohne App-Proxy → lokaler Entwurf + private Bestellanhänge
-      │
-      └─ mit App-Proxy → Couple Wear Studio Service
-                              │
-                 sichere Objektablage + Design-ID
-                              │
-                     KI-Linienkunst / Druckdatei
-                              │
-                    menschliche Qualitätsprüfung
-                              │
-                    Printful-Draft → Freigabe
-```
-
-Für Printful wird zuerst ein **Draft** angelegt, nicht automatisch bestätigt. Nach der Prüfung sendet der Service das bestätigte Motiv an Printful. Printful kann Druckdateien über eine geschützte URL referenzieren und einen Auftrag anschließend bestätigen. Die Datei-URL muss dabei für Printful erreichbar sein; eine Vorschau-URL allein reicht nicht.
-
-## Vertrag für den Studio-App-Proxy
-
-Lege im Theme-Editor im Feld **Studio-App-Proxy** beispielsweise diese relative Route an:
-
-```text
-/apps/couple-wear-studio/design
-```
-
-Der Service muss einen `POST` mit `multipart/form-data` annehmen. Felder:
-
-```text
-photo     Bilddatei (JPG, PNG oder WebP)
-style     Fine Line | Romantic | Detailed
-names     optionaler Name zum Gestalten der finalen Datei
-year      optionales Jahr
-font      Signatur | Elegant | Modern
-garment   T-Shirt | Hoodie
-```
-
-Antwort (JSON):
-
-```json
-{
-  "designId": "cw_01JXYZ...",
-  "previewUrl": "https://cdn.example.com/designs/cw_01JXYZ-preview.png",
-  "printFileUrl": "https://cdn.example.com/designs/cw_01JXYZ-print.png",
-  "printStatus": "Prüfung erforderlich"
-}
-```
-
-Anforderungen an den Service:
-
-- Die App-Proxy-Signatur und jeden Shopify-Webhook serverseitig validieren.
-- Fotos nur verschlüsselt speichern; Zugriff auf die Druckdatei über kurzlebige, von Printful abrufbare URLs ermöglichen.
-- Ein Design erst nach der Moderations-/Druckprüfung als `approved` markieren.
-- Bei `orders/paid` die Design-ID aus den privaten Line-Item-Properties lesen und einen Printful-Draft erzeugen.
-- Erst nach der Freigabe den Draft bestätigen. Kein `confirm=1` im automatischen Paid-Webhook.
-- Produkt-/Varianten-Mapping serverseitig pflegen. Die Shopify-Variant-ID ist nicht automatisch eine Printful-Variant-ID.
-
-## Empfohlener Bestellfluss
-
-1. Der App-Proxy erzeugt das Design, speichert Original und Produktionsdatei und gibt `designId` zurück.
-2. Das Theme übergibt `designId`, `printFileUrl`, Stil und Personalisierung als private Line-Item-Properties.
-3. Der `orders/paid`-Webhook schreibt einen Produktionsjob mit Status `needs_review`.
-4. Ein:e Mitarbeiter:in prüft Gesichtserkennung, Lesbarkeit, Druckfläche und Rechtehinweis.
-5. Der Service legt mit der freigegebenen Druckdatei einen Printful-Draft an.
-6. Nach erfolgreicher Preis-/Adressprüfung bestätigt der Service den Draft und speichert die Printful-Auftragsnummer an der Shopify-Bestellung.
-
-## Datenschutz und Betrieb
-
-Ein Paarfoto ist personenbezogen. Vor dem Go-live werden mindestens benötigt: Datenschutzerklärung mit Zweck und Löschfrist, Einwilligung für die KI-Verarbeitung, Auftragsverarbeitungsverträge für Speicherdienst/KI/Printful und eine Löschroutine für Originalfotos sowie Entwürfe. Die private Eigenschaftskonvention mit führendem Unterstrich verhindert die Anzeige im Storefront-Warenkorb, ersetzt aber keine Zugriffskontrolle oder Löschung.
+| `templates/page.personalisieren.json` | Vorlage der neuen Startseite |
+| `sections/cw-personalize-page.liquid` | Eingabe von Namen und Datum |
+| `assets/cw-personalize-page.js` | Übergabe der Eingaben zur Produktseite |
+| `snippets/cw-customizer.liquid` | Produktvorschau und Shopify-Line-Item-Properties |
+| `assets/cw-customizer.js` | Vorbelegung, Live-Vorschau und Validierung |
+| `sections/cw-hero.liquid` | Verlinkung des Startseitenbuttons |
 
 ## Tests
 
-Ohne Abhängigkeiten:
-
 ```bash
 node --test tests/cw-studio-contract.test.mjs
+node --check assets/cw-personalize-page.js
 node --check assets/cw-customizer.js
 ```
 
-Zusätzlich vor dem Go-live manuell prüfen:
-
-1. T-Shirt und Hoodie auf Desktop und Mobilgerät.
-2. Ungültige Bildtypen, 10-MB-Grenze und leeres Formular.
-3. Alle drei Stile, lange Namen, leeres Jahr und alle Schriften.
-4. Designänderung nach Stilwechsel: Bestellung darf nur den aktuellen Entwurf tragen.
-5. Warenkorb/Bestellung: private Properties, Design-ID und Datei-URL sind im Admin sichtbar.
-6. App-Proxy: ungültige Signatur, abgelaufene Datei-URL, KI-Fehler und Printful-Draft-Fehler.
+Vor dem Livegang eine Testbestellung mit 100-%-Rabatt durchführen und prüfen, ob sie in Printful als personalisierbarer Entwurf erscheint. Nicht bestätigen, solange kein Testprodukt beziehungsweise keine Testzahlung vorgesehen ist.
 
