@@ -1,4 +1,5 @@
 {{ 'cw-storefront.css' | asset_url | stylesheet_tag }}
+{{ 'cw-storefront-v2.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign cw_target = routes.root_url | append: 'pages/personalisieren'
   if section.settings.personalization_page != blank
@@ -21,7 +22,8 @@
     {%- if cw_photo != blank -%}
       {{ cw_photo | image_url: width: 1500 | image_tag: class: 'cw-hero__image', widths: '400, 700, 1000, 1500', loading: 'eager', fetchpriority: 'high', alt: 'Personalisierte Couple-Wear-Kollektion' }}
     {%- else -%}
-      <img class="cw-hero__image" src="{{ 'cw-couple-hero-v2.webp' | asset_url }}" width="1024" height="1536" alt="Paar in hellblauen Couple-Wear-Hoodies" fetchpriority="high">
+      <img class="cw-hero__image" src="{{ 'cw-editorial-couple-2026.webp' | asset_url }}" width="1122" height="1402" alt="Paar in hellblauem Hoodie und cremefarbenem T-Shirt" fetchpriority="high">
+      <span class="cw-hero__image-note">KI-generiertes Editorialmotiv</span>
     {%- endif -%}
     <div class="cw-hero__stamp" aria-hidden="true"><span>MADE</span><span>PERSONAL</span><span>✳</span></div>
     <div class="cw-hero__visual-caption">LOVE, MADE WEARABLE. &nbsp; / &nbsp; COUPLE WEAR</div>

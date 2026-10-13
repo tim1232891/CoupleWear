@@ -6,3 +6,7 @@
 # Local macOS and generated archive files.
 .DS_Store
 *.zip
+
+# Local backend runtime data and dependencies.
+node_modules/
+apps/studio-api/var/

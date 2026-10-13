@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Hellblauer blanker Hoodie</title><desc id="desc">Frontansicht eines neutralen Hoodies für die Designvorschau</desc>
+  <defs>
+    <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dbeaf1"/><stop offset=".5" stop-color="#bcd4df"/><stop offset="1" stop-color="#9dbbc8"/></linearGradient>
+    <linearGradient id="hood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8e8ef"/><stop offset="1" stop-color="#a9c6d2"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#38545f" flood-opacity=".2"/></filter>
+  </defs>
+  <g filter="url(#shadow)" stroke="#8eacb8" stroke-width="5" stroke-linejoin="round">
+    <path fill="url(#hood)" d="M347 235c8-100 67-170 153-170s145 70 153 170l-70 95H417l-70-95Z"/>
+    <path fill="#a9c4cf" opacity=".7" d="M405 239c24-58 53-87 95-87s71 29 95 87l-57 69h-76l-57-69Z"/>
+    <path fill="url(#fabric)" d="M350 228 204 291 79 711c-7 24 6 50 29 58l83 28c24 8 49-5 58-28l72-191-9 472c0 30 24 54 54 54h268c30 0 54-24 54-54l-9-472 72 191c9 23 34 36 58 28l83-28c23-8 36-34 29-58L796 291l-146-63c-20 77-69 112-150 112s-130-35-150-112Z"/>
+    <path fill="#adc7d2" d="M344 842c70-35 242-35 312 0l-18 157c-90 26-186 26-276 0l-18-157Z"/>
+  </g>
+  <g fill="none" stroke="#7f9eaa" stroke-width="5" stroke-linecap="round">
+    <path d="M423 309c-5 84 8 145 39 184M577 309c5 84-8 145-39 184"/><path d="M462 493h76"/>
+    <path d="M228 316c38 40 69 85 92 136M772 316c-38 40-69 85-92 136" opacity=".5"/>
+    <path d="M361 1000c92 19 186 19 278 0" opacity=".55"/>
+  </g>
+</svg>

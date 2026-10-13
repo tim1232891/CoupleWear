@@ -170,3 +170,30 @@ erst bestätigen, wenn Produkt, Variante, Schreibweise und Druckdatei geprüft w
 - [Printful-Personalisierung für Shopify einrichten](https://help.printful.com/hc/en-us/articles/50264262794257-How-can-I-set-up-a-personalized-product-on-my-Shopify-store)
 - [Ablauf personalisierter Shopify-Aufträge](https://help.printful.com/hc/en-us/articles/50264216563345-How-does-Printful-s-personalization-feature-for-Shopify-work)
 - [Printful API](https://developers.printful.com/docs/)
+
+## AI Studio 2.0
+
+Die Personalisierungsseite enthält jetzt den vollständigen mobilen Ablauf aus
+Foto-Upload, vier Fine-Line-Stilen, Vorschau/Neu-Generierung, separaten Textfeldern,
+Schriftwahl, realen Shopify-Varianten und Live-Mockup. Ohne Backend-URL läuft sie
+in einem klar gekennzeichneten Demo-Modus.
+
+Die geschützte Node-API liegt unter `apps/studio-api`. Sie übernimmt OpenAI,
+Upload-Bereinigung, signierte Dateien, 300-DPI-Druckdateien, Shopify-Webhooks und
+optionale Printful-v2-Drafts. Alle produktiven Integrationen sind standardmäßig
+deaktiviert.
+
+```sh
+cd apps/studio-api
+npm install
+npm test
+npm start
+```
+
+Weiterführende Dokumentation:
+
+- [Architektur](docs/ARCHITECTURE.md)
+- [Deployment und API-Key-Einrichtung](docs/DEPLOYMENT.md)
+- [Datenschutz und Löschkonzept](docs/PRIVACY-AND-RETENTION.md)
+- [Printful-Draft-Workflow](docs/PRINTFUL-SETUP.md)
+- [Startkollektion als redaktioneller Entwurf](docs/STARTKOLLEKTION.md)

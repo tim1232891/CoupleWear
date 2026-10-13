@@ -32,12 +32,18 @@ test('the studio renders a native Shopify product form on the personalization pa
   assert.match(studio, /type="submit"/);
 });
 
-test('the studio asks for names and date and provides a live preview', () => {
-  assert.match(studio, /data-cw-names/);
+test('the studio provides secure photo input, four styles and an exact text preview', () => {
+  assert.match(studio, /type="file"/);
+  assert.match(studio, /image\/jpeg,image\/png,image\/webp/);
+  assert.match(studio, /data-cw-consent/);
+  assert.match(studio, /data-cw-name-one/);
+  assert.match(studio, /data-cw-name-two/);
   assert.match(studio, /data-cw-date/);
   assert.match(studio, /data-cw-names-preview/);
   assert.match(studio, /data-cw-date-preview/);
-  assert.doesNotMatch(studio, /type="file"/);
+  assert.equal((studio.match(/data-cw-style data-preview-url/g) || []).length, 4);
+  assert.match(studioScript, /MAX_FILE_SIZE/);
+  assert.match(studioScript, /FormData/);
 });
 
 test('Shopify receives visible Printful personalization properties', () => {
@@ -45,7 +51,7 @@ test('Shopify receives visible Printful personalization properties', () => {
     assert.match(markup, /properties\[Namen\]/);
     assert.match(markup, /properties\[Datum\]/);
     assert.match(markup, /properties\[Personalisierung\]/);
-    assert.match(markup, /Printful-Personalisierung erforderlich/);
+    assert.match(markup, /Printful-Personalisierung erforderlich|Manuelle Druckfreigabe erforderlich/);
   }
 });
 
@@ -56,9 +62,24 @@ test('the front end never exposes a Printful token', () => {
   }
 });
 
+test('the front end never exposes an OpenAI key or calls OpenAI directly', () => {
+  for (const source of [studio, studioScript]) {
+    assert.doesNotMatch(source, /OPENAI_API_KEY/);
+    assert.doesNotMatch(source, /api\.openai\.com/);
+  }
+});
+
+test('personal text is separate from the AI generation request', () => {
+  assert.match(studio, /properties\[Name 1\]/);
+  assert.match(studio, /properties\[Name 2\]/);
+  assert.match(studio, /properties\[Schriftart\]/);
+  assert.doesNotMatch(studioScript, /payload\.append\(['"](?:name|date|extra)/);
+});
+
 test('the generated campaign visual is part of the theme', () => {
-  assert.ok(existsSync(resolve(root, 'assets/cw-couple-hero-v2.webp')));
-  assert.match(hero, /cw-couple-hero-v2\.webp/);
+  assert.ok(existsSync(resolve(root, 'assets/cw-editorial-couple-2026.webp')));
+  assert.match(hero, /cw-editorial-couple-2026\.webp/);
+  assert.match(hero, /KI-generiertes Editorialmotiv/);
 });
 
 test('browser assets parse as JavaScript', () => {

@@ -1,47 +1,43 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Couple Wear Studio – lokale Vorschau</title>
-    <link rel="stylesheet" href="../assets/cw-personalize-page.css">
-    <script src="../assets/cw-personalize-page.js" defer></script>
-    <style>body{margin:0;font-family:Arial,sans-serif}.test-header{height:72px;display:flex;align-items:center;padding:0 5vw;border-bottom:1px solid #dde5e1;font-weight:750;color:#293b37}</style>
-  </head>
-  <body>
-    <header class="test-header">Couple Wear</header>
-    <section class="cw-studio" data-cw-studio data-example-names="David &amp; Lena" data-example-date="05.08.2022" style="--cw-preview-x:50%;--cw-preview-y:57%;--cw-preview-width:43%;" aria-labelledby="studio-title">
-      <div class="cw-studio__topbar">
-        <a class="cw-studio__back" href="#"><span>←</span> Zurück zum Shop</a>
-        <span class="cw-studio__top-note"><i></i> Sicher personalisieren</span>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Couple Wear AI Studio – lokale Vorschau</title>
+  <link rel="stylesheet" href="../assets/cw-personalize-page.css">
+  <script src="../assets/cw-personalize-page.js" defer></script>
+  <style>body{margin:0;font-family:Arial,sans-serif}.test-header{height:72px;display:flex;align-items:center;padding:0 5vw;border-bottom:1px solid #dde5e1;font-weight:750;color:#293b37}</style>
+</head>
+<body>
+  <header class="test-header">Couple Wear</header>
+  <section class="cw-studio" data-cw-studio data-api-endpoint="" data-demo-mode="true" data-example-names="Lena &amp; David" data-example-date="05.08.2022" style="--cw-preview-x:50%;--cw-preview-y:57%;--cw-preview-width:43%;">
+    <div class="cw-studio__topbar"><a class="cw-studio__back" href="#"><span>←</span> Zurück zum Shop</a><span class="cw-studio__top-note"><i></i> Privat &amp; sicher verarbeitet</span></div>
+    <div class="cw-studio__intro">
+      <p class="cw-studio__eyebrow"><span>✦</span> COUPLE WEAR AI STUDIO</p><h1>Eure Geschichte. Als Design.</h1>
+      <p>Ladet euer Lieblingsfoto hoch, wählt einen Stil und gestaltet ein persönliches Kleidungsstück.</p>
+      <ol class="cw-studio__progress"><li class="is-active" data-cw-progress="1"><span>1</span> Foto</li><li data-cw-progress="2"><span>2</span> Stil</li><li data-cw-progress="3"><span>3</span> Design</li><li data-cw-progress="4"><span>4</span> Text</li><li data-cw-progress="5"><span>5</span> Produkt</li></ol>
+    </div>
+    <div class="cw-studio__shell">
+      <div class="cw-studio__visual">
+        <div class="cw-studio__visual-heading"><span><i></i> LIVE-VORSCHAU</span><span>DEMO</span></div>
+        <div class="cw-studio__mockup"><img class="cw-studio__product-image" src="../assets/cw-hoodie-mockup.svg" alt="Hoodie" data-cw-product-image><div class="cw-studio__print"><img src="../assets/cw-style-minimal.svg" alt="" data-cw-design-image><strong data-cw-names-preview data-font="signature">Lena &amp; David</strong><span data-cw-date-preview>05.08.2022</span><small data-cw-extra-preview></small></div><span class="cw-studio__zoom-note"><span>✦</span> Text aktualisiert sich sofort</span></div>
+        <div class="cw-studio__visual-footer"><span>EURE GESCHICHTE. EUER DESIGN.</span><span>♡</span></div>
       </div>
-      <div class="cw-studio__shell">
-        <div class="cw-studio__visual">
-          <div class="cw-studio__visual-heading"><span><i></i> LIVE-VORSCHAU</span><span>PERSONAL EDITION</span></div>
-          <div class="cw-studio__mockup">
-            <img class="cw-studio__product-image" src="../assets/cw-campaign-hoodie.webp" alt="Hoodie" data-cw-product-image>
-            <div class="cw-studio__print"><img src="../assets/cw-hands-heart.svg" alt=""><strong data-cw-names-preview>David &amp; Lena</strong><span data-cw-date-preview>05.08.2022</span></div>
-            <span class="cw-studio__zoom-note"><span>✦</span> Vorschau aktualisiert sich live</span>
-          </div>
-          <div class="cw-studio__visual-footer"><span>EURE NAMEN. EUER DATUM.</span><span>♡</span></div>
-        </div>
-        <div class="cw-studio__content">
-          <p class="cw-studio__eyebrow"><span>✦</span> COUPLE WEAR STUDIO</p>
-          <h1 id="studio-title">Macht es zu eurem.</h1>
-          <p class="cw-studio__lead">Personalisiert euren Pullover mit den Namen und dem Datum, das euch verbindet. Eure Vorschau verändert sich sofort.</p>
-          <div class="cw-studio__product-row"><div><span>DEIN PRINTFUL-PRODUKT</span><strong>Couple Wear Hoodie</strong></div><span class="cw-studio__price" data-cw-price>CHF 59.00</span></div>
-          <form class="cw-studio__form" action="#">
-            <div class="cw-studio__field"><label for="variant">Größe und Farbe</label><div class="cw-studio__select-wrap"><select id="variant" name="id" data-cw-variant-select><option data-price="CHF 59.00" data-available="true">Hellblau / M</option><option data-price="CHF 59.00" data-available="false">Hellblau / XL – Ausverkauft</option></select><span>⌄</span></div></div>
-            <div class="cw-studio__field"><label for="names">Eure Namen <em>*</em></label><input id="names" name="properties[Namen]" type="text" maxlength="38" placeholder="z. B. David &amp; Lena" required data-cw-names><div class="cw-studio__help"><span>Wird genau so für den Druck übernommen</span><span data-cw-counter>0 / 38</span></div></div>
-            <div class="cw-studio__field"><label for="date">Euer Datum <small>(optional)</small></label><input id="date" name="properties[Datum]" type="text" maxlength="20" placeholder="z. B. 05.08.2022" data-cw-date></div>
-            <input type="hidden" name="properties[Personalisierung]" data-cw-summary>
-            <div class="cw-studio__approval"><span>✓</span><p><strong>Druckfreigabe mit Kontrolle</strong> Namen und Datum werden zusammen mit deiner Shopify-Bestellung an den Printful-Auftrag übergeben.</p></div>
-            <button class="cw-studio__submit" type="submit" data-cw-submit data-add-text="Personalisiert in den Warenkorb" data-soldout-text="Diese Variante ist ausverkauft"><span data-cw-submit-label>Personalisiert in den Warenkorb</span><span>→</span></button>
-            <p class="cw-studio__legal">Die Vorschau dient zur Orientierung.</p><p class="cw-studio__status" data-cw-status></p>
-          </form>
-          <div class="cw-studio__trust"><span>♡ Persönlich gefertigt</span><span>♲ Bewusst produziert</span><span>⌁ Sicher bezahlt</span></div>
-        </div>
-      </div>
-    </section>
-  </body>
+      <div class="cw-studio__content"><form class="cw-studio__form" action="#">
+        <section class="cw-studio__step"><div class="cw-studio__step-heading"><span>01</span><div><h2>Euer Foto</h2><p>Klare Konturen liefern das beste Ergebnis.</p></div></div><label class="cw-studio__dropzone" data-cw-dropzone><input type="file" accept="image/jpeg,image/png,image/webp" data-cw-file-input><span class="cw-studio__upload-icon">↥</span><strong>Foto hierher ziehen</strong><span>JPG, PNG, WebP · max. 10 MB</span><img alt="Original" data-cw-original-preview hidden></label><label class="cw-studio__consent"><input type="checkbox" data-cw-consent><span>Ich bin berechtigt, dieses Foto zu verwenden, und stimme der KI-Verarbeitung zu.</span></label><p class="cw-studio__privacy-note">Originale werden nach der Verarbeitung gelöscht.</p></section>
+        <section class="cw-studio__step"><div class="cw-studio__step-heading"><span>02</span><div><h2>Euren Stil wählen</h2><p>Vier Fine-Line-Richtungen.</p></div></div><div class="cw-studio__styles">
+          <label class="cw-studio__style is-selected"><input type="radio" name="style" value="minimal" data-cw-style data-preview-url="../assets/cw-style-minimal.svg" checked><img src="../assets/cw-style-minimal.svg" alt=""><strong>Minimal Line Art</strong><span>Fein &amp; reduziert</span></label>
+          <label class="cw-studio__style"><input type="radio" name="style" value="heart" data-cw-style data-preview-url="../assets/cw-style-heart.svg"><img src="../assets/cw-style-heart.svg" alt=""><strong>Romantic Heart</strong><span>Sanft umrahmt</span></label>
+          <label class="cw-studio__style"><input type="radio" name="style" value="embrace" data-cw-style data-preview-url="../assets/cw-style-embrace.svg"><img src="../assets/cw-style-embrace.svg" alt=""><strong>Loving Embrace</strong><span>Fließend &amp; nah</span></label>
+          <label class="cw-studio__style"><input type="radio" name="style" value="hands" data-cw-style data-preview-url="../assets/cw-style-hands.svg"><img src="../assets/cw-style-hands.svg" alt=""><strong>Hands of Love</strong><span>Symbolisch</span></label>
+        </div></section>
+        <section class="cw-studio__step"><div class="cw-studio__step-heading"><span>03</span><div><h2>KI-Design erstellen</h2><p>Vor dem Kauf prüfen.</p></div></div><button class="cw-studio__generate" type="button" data-cw-generate><span data-cw-generate-label>Mein Design erstellen</span><span>✦</span></button><div class="cw-studio__generation-progress" data-cw-generation-progress hidden><span><i data-cw-progress-bar></i></span><p data-cw-generation-message></p></div><div class="cw-studio__result" data-cw-result hidden><div><span>Original</span><img data-cw-result-before></div><div><span>Linienkunst</span><img data-cw-result-after></div><button type="button" data-cw-regenerate>↻ Neu generieren</button></div><p class="cw-studio__demo-note"><strong>Demo-Modus:</strong> Lokale Musterdesigns.</p></section>
+        <section class="cw-studio__step"><div class="cw-studio__step-heading"><span>04</span><div><h2>Exakt personalisieren</h2><p>Texte werden nicht von der KI erzeugt.</p></div></div><div class="cw-studio__field-grid"><div class="cw-studio__field"><label>Name 1</label><input name="properties[Name 1]" maxlength="18" placeholder="Lena" data-cw-name-one required></div><div class="cw-studio__field"><label>Name 2</label><input name="properties[Name 2]" maxlength="18" placeholder="David" data-cw-name-two required></div></div><div class="cw-studio__field-grid"><div class="cw-studio__field"><label>Datum</label><input name="properties[Datum]" data-cw-date placeholder="05.08.2022"></div><div class="cw-studio__field"><label>Schrift</label><div class="cw-studio__select-wrap"><select name="properties[Schriftart]" data-cw-font><option value="signature">Signature</option><option value="editorial">Editorial Serif</option><option value="modern">Modern Sans</option></select><span>⌄</span></div></div></div><div class="cw-studio__field"><label>Kurzer Zusatz</label><input name="properties[Zusatztext]" maxlength="28" data-cw-extra placeholder="für immer wir"><div class="cw-studio__help"><span>Live aktualisiert</span><span data-cw-counter></span></div></div></section>
+        <section class="cw-studio__step"><div class="cw-studio__step-heading"><span>05</span><div><h2>Produkt auswählen</h2><p>Reale Shopify-Varianten.</p></div></div><div class="cw-studio__product-types"><button type="button" class="is-selected" data-cw-product-choice="hoodie" data-product-title="Couple Hoodie"><span>Hoodie</span><small>CHF 59</small></button><button type="button" data-cw-product-choice="shirt" data-product-title="Couple Shirt"><span>T-Shirt</span><small>CHF 39</small></button></div><div class="cw-studio__field-grid"><div class="cw-studio__field"><label>Farbe &amp; Größe</label><div class="cw-studio__select-wrap"><select name="id" data-cw-variant-select><option value="1" data-product-type="hoodie" data-price="CHF 59" data-available="true">Hellblau / M</option><option value="2" data-product-type="shirt" data-price="CHF 39" data-available="true">Creme / M</option></select><span>⌄</span></div></div><div class="cw-studio__field"><label>Druckposition</label><div class="cw-studio__select-wrap"><select data-cw-placement><option value="front">Vorderseite</option><option value="back">Rückseite</option></select><span>⌄</span></div></div></div>
+          <input type="hidden" data-cw-names-property><input type="hidden" data-cw-summary><input type="hidden" data-cw-style-property><input type="hidden" data-cw-design-id><input type="hidden" data-cw-production-status><div class="cw-studio__order-summary"><div><span data-cw-product-title>Couple Hoodie</span><strong data-cw-price>CHF 59</strong></div><p>✓ Jede Druckdatei wird geprüft.</p></div><button class="cw-studio__submit" type="submit" data-cw-submit data-add-text="Personalisiert in den Warenkorb" data-soldout-text="Ausverkauft"><span data-cw-submit-label>Personalisiert in den Warenkorb</span><span>→</span></button><p class="cw-studio__status" data-cw-status></p>
+        </section>
+      </form></div>
+    </div>
+  </section>
+</body>
 </html>
