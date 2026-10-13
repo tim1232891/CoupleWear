@@ -1,0 +1,7 @@
+/* COUPLE WEAR — subtle universal identity without replacing core Horizon components */
+:root{--cw-brand-ink:#334c49;--cw-brand-mist:#e6f0f1;--cw-brand-pearl:#fbfaf7}
+body{letter-spacing:-.003em}
+::selection{background:#c9dfe0;color:#233e3d}
+.shopify-section:has(> .cw-hero){margin:0}
+/* Focus-visible affordance for keyboard users */
+a:focus-visible,button:focus-visible{outline-offset:3px}

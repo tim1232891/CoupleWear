@@ -1,0 +1,13 @@
+{{ 'cw-storefront.css' | asset_url | stylesheet_tag }}
+<section class="cw-faq" aria-labelledby="cw-faq-heading-{{ section.id }}">
+ <div class="cw-faq__intro"><p class="cw-small-kicker">GUT ZU WISSEN</p><h2 id="cw-faq-heading-{{ section.id }}">Noch Fragen?</h2><p>Alles, was du vor deiner Bestellung wissen solltest.</p></div>
+ <div class="cw-faq__items">
+  <details><summary>Kann ich Namen und Datum verändern? <span aria-hidden="true">+</span></summary><p>Ja! Auf der Produktseite gibst du deinen Wunschtext und optional euer Datum ein. Die Vorschau passt sich während der Eingabe an.</p></details>
+  <details><summary>Kann ich die Vorschau vor dem Kauf sehen? <span aria-hidden="true">+</span></summary><p>Ja. Die Vorschau zeigt dir, wie sich dein Text mit dem Motiv verbindet. Sie ist eine digitale Orientierung; der finale Druck kann leicht abweichen.</p></details>
+  <details><summary>Welche Größe soll ich wählen? <span aria-hidden="true">+</span></summary><p>Bitte prüfe die Größeninformationen beim jeweiligen Produkt. Die Größen können sich je nach Shirt oder Hoodie unterscheiden.</p></details>
+  <details><summary>Wie wird meine Bestellung hergestellt? <span aria-hidden="true">+</span></summary><p>Wir planen die Fertigung auf Bestellung über unseren Print-on-Demand-Partner. Genaue Lieferoptionen und Kosten werden im Bestellprozess angezeigt.</p></details>
+ </div>
+</section>
+{% schema %}
+{"name":"Couple Wear · FAQ","settings":[],"presets":[{"name":"Couple Wear · FAQ"}]}
+{% endschema %}

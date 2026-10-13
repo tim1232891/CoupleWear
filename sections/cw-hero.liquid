@@ -1,0 +1,46 @@
+{{ 'cw-storefront.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign cw_target = routes.all_products_collection_url
+  if section.settings.featured_product != blank
+    assign cw_target = section.settings.featured_product.url
+  elsif collections.all.products.first != blank
+    assign cw_target = collections.all.products.first.url
+  endif
+  assign cw_photo = section.settings.campaign_image
+-%}
+<section class="cw-hero" aria-labelledby="cw-hero-heading-{{ section.id }}">
+  <div class="cw-hero__copy">
+    <p class="cw-hero__eyebrow"><span class="cw-hero__eyebrow-star" aria-hidden="true">✦</span> {{ section.settings.eyebrow | escape }}</p>
+    <h1 id="cw-hero-heading-{{ section.id }}" class="cw-hero__title">{{ section.settings.title | escape }} <em>{{ section.settings.title_accent | escape }}</em></h1>
+    <p class="cw-hero__description">{{ section.settings.description | escape }}</p>
+    <div class="cw-hero__actions">
+      <a class="cw-hero__button" href="{{ cw_target }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>
+      <a class="cw-hero__text-link" href="#cw-how-it-works">So funktioniert's <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="cw-hero__micro"><span aria-hidden="true">♡</span> Dein Motiv. Deine Namen. Eure Geschichte.</div>
+  </div>
+  <div class="cw-hero__visual">
+    {%- if cw_photo != blank -%}
+      {{ cw_photo | image_url: width: 1500 | image_tag: class: 'cw-hero__image', widths: '400, 700, 1000, 1500', loading: 'eager', fetchpriority: 'high', alt: 'Personalisierte Couple-Wear-Kollektion' }}
+    {%- else -%}
+      <img class="cw-hero__image" src="{{ 'cw-campaign-hoodie.webp' | asset_url }}" width="1000" height="1600" alt="Hellblauer Hoodie mit Hände-Herz-Motiv auf der Rückseite" fetchpriority="high">
+    {%- endif -%}
+    <div class="cw-hero__stamp" aria-hidden="true"><span>MADE</span><span>PERSONAL</span><span>✳</span></div>
+    <div class="cw-hero__visual-caption">LOVE, MADE WEARABLE. &nbsp; / &nbsp; COUPLE WEAR</div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Couple Wear · Hero",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Kleiner Titel","default":"PERSONALISIERTE FASHION FÜR ZWEI"},
+    {"type":"text","id":"title","label":"Haupttitel","default":"Für die Momente, die"},
+    {"type":"text","id":"title_accent","label":"Titel, kursiv","default":"bleiben."},
+    {"type":"textarea","id":"description","label":"Beschreibung","default":"Nicht einfach nur ein Hoodie. Ein Stück eurer Geschichte – mit euren Namen, eurem Datum und eurem ganz persönlichen Design."},
+    {"type":"text","id":"button_label","label":"Button-Text","default":"Jetzt personalisieren"},
+    {"type":"product","id":"featured_product","label":"Produkt für den Hauptbutton"},
+    {"type":"image_picker","id":"campaign_image","label":"Eigenes Hero-Foto (optional)"}
+  ],
+  "presets": [{"name":"Couple Wear · Hero"}]
+}
+{% endschema %}

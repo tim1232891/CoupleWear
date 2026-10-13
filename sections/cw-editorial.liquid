@@ -1,0 +1,8 @@
+{{ 'cw-storefront.css' | asset_url | stylesheet_tag }}
+<section class="cw-editorial" aria-labelledby="cw-editorial-heading-{{ section.id }}">
+ <div class="cw-editorial__art"><img src="{{ 'cw-hands-heart.svg' | asset_url }}" alt="Hände halten ein Herz, Couple-Wear-Motiv" loading="lazy" width="700" height="390"><span>designed for two. made for you.</span></div>
+ <div class="cw-editorial__copy"><p class="cw-small-kicker">MEHR ALS EIN PRINT</p><h2 id="cw-editorial-heading-{{ section.id }}">Euer Gefühl.<br><em>Euer Statement.</em></h2><p>Die schönsten Dinge erzählen Geschichten. Mit Couple Wear trägst du eure ganz persönliche – dezent, modern und voller Bedeutung.</p><a href="{{ routes.all_products_collection_url }}" class="cw-editorial__link">Kollektion entdecken <span aria-hidden="true">↗</span></a></div>
+</section>
+{% schema %}
+{"name":"Couple Wear · Story","settings":[],"presets":[{"name":"Couple Wear · Story"}]}
+{% endschema %}
