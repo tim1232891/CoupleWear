@@ -44,6 +44,8 @@ test('the studio provides secure photo input, four styles and an exact text prev
   assert.equal((studio.match(/data-cw-style data-preview-url/g) || []).length, 4);
   assert.match(studioScript, /MAX_FILE_SIZE/);
   assert.match(studioScript, /FormData/);
+  assert.match(studio, /beide Gesichter groß, scharf und gut beleuchtet/i);
+  assert.match(studio, /Identitätstreues KI-Design/i);
 });
 
 test('Shopify receives visible Printful personalization properties', () => {

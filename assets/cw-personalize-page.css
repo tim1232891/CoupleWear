@@ -84,6 +84,9 @@
 .cw-studio__consent input { width: 17px; height: 17px; margin: 1px 0 0; accent-color: #62897f; }
 .cw-studio__privacy-note { margin: 10px 0 0 28px; color: #84918e; font-size: 9px; line-height: 1.5; }
 .cw-studio__privacy-note a { color: #536f68; text-underline-offset: 2px; }
+.cw-studio__photo-tips { display: grid; gap: 6px; margin: 12px 0 14px; padding: 12px 14px; border: 1px solid #dce9e5; border-radius: 10px; background: #f7fbfa; color: #61746f; font-size: 10px; line-height: 1.45; list-style: none; }
+.cw-studio__photo-tips li { display: flex; align-items: flex-start; gap: 7px; }
+.cw-studio__photo-tips span { color: #4f7c70; font-weight: 800; }
 
 .cw-studio__styles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .cw-studio__style { position: relative; overflow: hidden; padding: 7px 7px 11px; border: 1px solid #d9e3df; border-radius: 12px; background: #fff; cursor: pointer; transition: .2s ease; }

@@ -178,9 +178,10 @@
 
     async function animateProgress() {
       const messages = [
-        ['Foto wird sicher vorbereitet …', '24%'],
-        ['Konturen und Pose werden analysiert …', '55%'],
-        ['Fine-Line-Design wird verfeinert …', '82%'],
+        ['Foto wird sicher in hoher Auflösung vorbereitet …', '18%'],
+        ['Gesichtsform und markante Merkmale werden erhalten …', '42%'],
+        ['Pose, Haare und Proportionen werden übertragen …', '68%'],
+        ['Fine-Line-Design wird in Druckqualität verfeinert …', '86%'],
       ];
       for (const [message, width] of messages) {
         elements.generationMessage.textContent = message;
@@ -241,7 +242,15 @@
         elements.resultAfter.src = result.previewUrl;
         elements.result.hidden = false;
         elements.progressBar.style.width = '100%';
-        setStatus(demoMode ? 'Demo-Design erstellt. Für die Produktion ist die Backend-Verbindung erforderlich.' : 'Euer Design ist bereit. Ihr könnt es jetzt personalisieren.', 'success');
+        const localContour = result.mode === 'local-contour';
+        setStatus(
+          demoMode
+            ? 'Demo-Design erstellt. Für die echte Foto-Umwandlung ist die Backend-Verbindung erforderlich.'
+            : localContour
+              ? 'Originalgetreue Kontur erstellt. Mit einem serverseitigen KI-Schlüssel wird das Ergebnis noch eleganter und detailreicher.'
+              : 'Euer hochauflösendes KI-Design ist bereit. Bitte prüft, ob beide Personen gut wiederzuerkennen sind.',
+          'success',
+        );
         setStep(4);
       } catch (error) {
         resetGeneratedDesign();

@@ -8,9 +8,11 @@ npm install
 npm start
 ```
 
-`GET http://localhost:9292/health` muss `imageMode: "demo"` melden, solange kein
-OpenAI-Schlüssel gesetzt ist. Im Theme-Editor bleibt die Backend-URL für eine rein
-lokale Theme-Demo leer; dann verwendet die Oberfläche die vier lokalen Muster.
+`GET http://localhost:9292/health` muss `imageMode: "local-contour"` melden,
+solange kein OpenAI-Schlüssel gesetzt ist. Dieser Modus wandelt das echte Foto
+lokal in eine originalgetreue Schwarzlinien-Kontur um und überträgt es nicht an
+einen externen KI-Dienst. Im Theme-Editor bleibt die Backend-URL für eine rein
+statische Theme-Demo leer; dann verwendet die Oberfläche die vier lokalen Muster.
 
 ## 2. OpenAI-Projektschlüssel
 
@@ -20,12 +22,23 @@ lokale Theme-Demo leer; dann verwendet die Oberfläche die vier lokalen Muster.
 
    ```dotenv
    OPENAI_API_KEY=sk-...
-   OPENAI_IMAGE_MODEL=gpt-image-2
+   OPENAI_IMAGE_MODEL=gpt-image-2.5-sunburst
+   OPENAI_IMAGE_QUALITY=high
+   OPENAI_IMAGE_SIZE=2048x2048
+   OPENAI_IMAGE_TIMEOUT_MS=300000
    OPENAI_API_BASE_URL=https://api.openai.com
    ```
 
 4. Budget- und Nutzungslimits im Projekt setzen.
 5. Den Schlüssel nie in Shopify, GitHub, Screenshots oder Browser-Code einfügen.
+
+`gpt-image-2.5-sunburst` ist bewusst gewählt, weil bei diesem Shop präzise
+Bildbearbeitung und Wiedererkennbarkeit wichtiger sind als die kürzeste Laufzeit.
+`high` und `2048x2048` sind der produktive Qualitätsstandard. Wer nach Tests noch
+mehr Detail braucht, kann `OPENAI_IMAGE_QUALITY=xhigh` oder `max` setzen; dadurch
+steigen Laufzeit und Kosten. Das Ergebnis bleibt eine künstlerische Linienzeichnung
+und ist keine biometrisch garantierte Reproduktion. Vor der Bestellung muss es in
+der Vergleichsansicht geprüft werden.
 
 Offizielle Einrichtung: https://platform.openai.com/api-keys
 

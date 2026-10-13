@@ -86,6 +86,7 @@ async function handleDesignCreation(request, response) {
   const form = await parsedRequest.formData();
   const photo = form.get('photo');
   const style = String(form.get('style') || '');
+  const attempt = Math.max(1, Math.min(Number(form.get('attempt')) || 1, 5));
   if (!photo || typeof photo.arrayBuffer !== 'function') throw Object.assign(new Error('Bitte lade ein Foto hoch.'), { status: 400 });
   if (photo.size > 10 * 1024 * 1024) throw Object.assign(new Error('Das Foto darf höchstens 10 MB groß sein.'), { status: 413 });
   if (!STYLES[style]) throw Object.assign(new Error('Bitte wähle einen gültigen Designstil.'), { status: 400 });
@@ -96,13 +97,15 @@ async function handleDesignCreation(request, response) {
   const deleteToken = randomBytes(32).toString('base64url');
   const createdAt = new Date();
   const expiresAt = new Date(createdAt.getTime() + config.retentionHours * 60 * 60 * 1000);
-  const generated = await createArtwork(input, style, config);
+  const generated = await createArtwork(input, style, config, { attempt });
   await storage.create(designId, {
     version: 1,
     designId,
     style,
     provider: generated.provider,
     model: generated.model,
+    quality: generated.quality,
+    sourceResolution: generated.sourceResolution,
     createdAt: createdAt.toISOString(),
     expiresAt: expiresAt.toISOString(),
     deleteTokenHash: sha256(deleteToken),
@@ -117,6 +120,8 @@ async function handleDesignCreation(request, response) {
     expiresAt: expiresAt.toISOString(),
     productionReady: false,
     mode: generated.provider,
+    model: generated.model,
+    quality: generated.quality,
   }, request);
 }
 
@@ -274,7 +279,13 @@ const server = createServer(async (request, response) => {
       return response.end();
     }
     const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
-    if (request.method === 'GET' && url.pathname === '/health') return sendJson(response, 200, { status: 'ok', imageMode: config.openAiKey ? 'openai' : 'demo', printfulDrafts: canCreatePrintfulDraft(config) }, request);
+    if (request.method === 'GET' && url.pathname === '/health') return sendJson(response, 200, {
+      status: 'ok',
+      imageMode: config.openAiKey ? 'openai' : 'local-contour',
+      imageModel: config.openAiKey ? config.openAiModel : 'sharp-sobel-v1',
+      imageQuality: config.openAiKey ? config.openAiQuality : 'local',
+      printfulDrafts: canCreatePrintfulDraft(config),
+    }, request);
     if (request.method === 'POST' && url.pathname === '/api/v1/designs') return await handleDesignCreation(request, response);
 
     const assetMatch = url.pathname.match(/^\/api\/v1\/designs\/([a-f0-9-]{36})\/(preview|print-file)$/);
@@ -295,7 +306,9 @@ const server = createServer(async (request, response) => {
 server.listen(config.port, () => {
   log('studio_api_started', {
     port: config.port,
-    imageMode: config.openAiKey ? 'openai' : 'demo',
+    imageMode: config.openAiKey ? 'openai' : 'local-contour',
+    imageModel: config.openAiKey ? config.openAiModel : 'sharp-sobel-v1',
+    imageQuality: config.openAiKey ? config.openAiQuality : 'local',
     printfulMode: config.printful.orderMode,
     ephemeralSigningSecret: !process.env.SIGNING_SECRET,
   });

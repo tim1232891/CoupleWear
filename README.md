@@ -183,6 +183,13 @@ Upload-Bereinigung, signierte Dateien, 300-DPI-Druckdateien, Shopify-Webhooks un
 optionale Printful-v2-Drafts. Alle produktiven Integrationen sind standardmäßig
 deaktiviert.
 
+Die Bildpipeline ist auf Wiedererkennbarkeit ausgelegt: hochauflösende
+Eingabeaufbereitung, `gpt-image-2.5-sunburst` in hoher Qualität, ein strenger
+Identitäts-Prompt sowie eine technische Linien- und Transparenzprüfung. Mit
+Backend-URL, aber ohne `OPENAI_API_KEY`, wird das echte Foto lokal als
+originalgetreue Sobel-Kontur verarbeitet. Nur ohne Backend-URL bleibt die
+Shopify-Oberfläche im statischen Demo-Modus.
+
 ```sh
 cd apps/studio-api
 npm install

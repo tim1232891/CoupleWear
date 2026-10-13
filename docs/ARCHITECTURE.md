@@ -34,9 +34,20 @@ Shopify orders/paid -> HMAC-Webhook -> 4500x5400 PNG / 300 DPI
 ```
 
 Das Originalfoto wird nur im Arbeitsspeicher angenommen, mit Sharp rotiert,
-normalisiert und ohne Metadaten in PNG umgewandelt. Das Original oder die
+auf bis zu 2560 Pixel detailerhaltend normalisiert und ohne Metadaten in PNG
+umgewandelt. Die KI-Bearbeitung verwendet standardmäßig das präzise Editiermodell
+`gpt-image-2.5-sunburst` mit hoher Qualität und 2048×2048 Pixeln. Der Prompt sperrt
+Gesichtsform, Frisur, Proportionen, Pose und andere identitätsprägende Merkmale;
+eine technische Nachprüfung verhindert zu leere oder flächig ungeeignete
+Druckmotive. Das Original oder die
 normalisierte Eingabe wird nicht dauerhaft gespeichert. Nur das erzeugte Design
 und – nach Kauf – die Druckdatei werden in einem privaten Verzeichnis abgelegt.
+
+Ohne OpenAI-Schlüssel erzeugt dasselbe Backend aus dem echten Upload lokal eine
+Sobel-Konturzeichnung (`local-contour`). Sie bewahrt die tatsächlichen Kanten des
+Fotos und benötigt keinen externen KI-Anbieter, ist gestalterisch aber weniger
+selektiv als das Premium-Modell. Nur wenn im Theme überhaupt keine Backend-URL
+eingetragen ist, zeigt die Browseroberfläche die statischen Mustermotive.
 
 ## Sicherheitsgrenzen
 
