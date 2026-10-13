@@ -1,0 +1,8 @@
+# Local secrets — never commit these files.
+.env
+.env.*
+!.env.example
+
+# Local macOS and generated archive files.
+.DS_Store
+*.zip

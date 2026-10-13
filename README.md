@@ -90,6 +90,54 @@ bleibt die Produktion zunächst bewusst im kontrollierten Printful-Entwurfsstatu
 API und normale automatische Shopify-Importe dürfen nicht gleichzeitig für denselben
 Auftrag aktiv sein, sonst können doppelte Printful-Aufträge entstehen.
 
+## Printful-API-Token lokal einrichten
+
+Im Projekt liegen zwei Umgebungsdateien:
+
+- `.env`: lokal und durch `.gitignore` von GitHub ausgeschlossen
+- `.env.example`: sichere Vorlage ohne geheime Werte
+
+### Privaten Token erzeugen
+
+1. [Printful Developers](https://developers.printful.com/login) öffnen und mit dem
+   eigenen Printful-Konto anmelden.
+2. Links **Tokens** und anschließend **Create a token** beziehungsweise
+   **Add new token** auswählen.
+3. Als Namen beispielsweise `Couple Wear Backend` eintragen.
+4. Bei **Access level** die Option **A single store** wählen.
+5. Den mit Shopify verbundenen Couple-Wear-Store auswählen.
+6. Für die geplante Bestellautomatisierung nur diese Berechtigungen aktivieren:
+   - `orders` – Entwürfe erstellen und bearbeiten
+   - `sync_products/read` – synchronisierte Produkte und Varianten lesen
+   - `file_library` – individuelle Druckdateien verwalten
+7. Ein Ablaufdatum wählen und den Token erstellen.
+8. Den angezeigten Token sofort kopieren. Printful zeigt ihn nach dem Verlassen
+   der Seite nicht noch einmal an.
+9. Lokal in `.env` ausschließlich diese Zeile ergänzen:
+
+   ```dotenv
+   PRINTFUL_API_TOKEN=dein_token_von_printful
+   ```
+
+10. `PRINTFUL_API_ENABLED=false` unverändert lassen. Der Schalter wird erst
+    aktiviert, wenn ein geschütztes Backend und der Shopify-Webhook eingerichtet
+    und mit Testbestellungen geprüft wurden.
+
+Ein Token für **A single store** benötigt normalerweise keine
+`PRINTFUL_STORE_ID`. Bei einem Account-Token muss die Store-ID zusätzlich
+eingetragen und bei API-Anfragen als `X-PF-Store-Id` gesendet werden.
+
+### Token lokal testen
+
+Nach dem Eintragen kann die Verbindung geprüft werden, ohne den Token auszugeben:
+
+```sh
+node scripts/check-printful-token.mjs
+```
+
+Das Skript zeigt nur an, ob der Token gültig ist und welche Berechtigungen er
+besitzt. Es erstellt keine Bestellung und verändert keine Printful-Daten.
+
 ## Wichtige Dateien
 
 | Datei | Aufgabe |
